@@ -24,6 +24,7 @@
 
 ## test
 **/coverage
+**/__screenshots__
 
 # misc
 .DS_Store

@@ -11,7 +11,10 @@
         "nuke": "rimraf dist node_modules .turbo",
         "test": "jest",
         "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage"
+        "test:coverage": "jest --coverage",
+        "test:vitest": "vitest run",
+        "test:vitest:watch": "vitest",
+        "test:vitest:coverage": "vitest run --coverage"
     },
     "keywords": [],
     "homepage": "https://flowiseai.com",
@@ -150,7 +153,6 @@
         "pdf-parse": "^1.1.1",
         "pdfjs-dist": "^5.3.93",
         "pg": "^8.11.2",
-        "playwright": "^1.35.0",
         "puppeteer": "^20.7.1",
         "pyodide": ">=0.21.0-alpha.2",
         "redis": "^4.6.7",
@@ -184,6 +186,7 @@
         "ts-jest": "^29.3.2",
         "tsc-watch": "^6.0.4",
         "tslib": "^2.6.2",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "vitest": "^4.0.17"
     }
 }
