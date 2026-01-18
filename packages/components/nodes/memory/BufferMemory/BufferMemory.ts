@@ -125,7 +125,7 @@ class BufferMemoryExtended extends FlowiseMemory implements MemoryMethods {
             return await mapChatMessageToBaseMessage(chatMessage, this.orgId)
         }
 
-        let returnIMessages: IMessage[] = []
+        const returnIMessages: IMessage[] = []
         for (const m of chatMessage) {
             returnIMessages.push({
                 message: m.content as string,

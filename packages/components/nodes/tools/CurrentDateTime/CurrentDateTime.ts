@@ -65,7 +65,7 @@ class CurrentDateTime_Tools implements INode {
             code: code
         }
 
-        let dynamicStructuredTool = new DynamicStructuredTool(obj)
+        const dynamicStructuredTool = new DynamicStructuredTool(obj)
 
         return dynamicStructuredTool
     }

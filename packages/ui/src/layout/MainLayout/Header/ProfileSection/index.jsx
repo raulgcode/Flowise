@@ -335,7 +335,7 @@ const ProfileSection = ({ handleLogout }) => {
         if (importAllApi.error) {
             setImportDialogOpen(false)
             let errMsg = 'Invalid Imported File'
-            let error = importAllApi.error
+            const error = importAllApi.error
             if (error?.response?.data) {
                 errMsg = typeof error.response.data === 'object' ? error.response.data.message : error.response.data
             }
@@ -368,7 +368,7 @@ const ProfileSection = ({ handleLogout }) => {
         if (exportAllApi.error) {
             setExportDialogOpen(false)
             let errMsg = 'Internal Server Error'
-            let error = exportAllApi.error
+            const error = exportAllApi.error
             if (error?.response?.data) {
                 errMsg = typeof error.response.data === 'object' ? error.response.data.message : error.response.data
             }

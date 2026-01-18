@@ -365,8 +365,8 @@ class VectaraChain_Chains implements INode {
 
             // Reorder citations in summary and create the list of returned source documents
             rawSummarizedText = result.responseSet[0].summary[0]?.text
-            let summarizedText = reorderCitations(rawSummarizedText)
-            let summaryResponses = applyCitationOrder(responses, rawSummarizedText)
+            const summarizedText = reorderCitations(rawSummarizedText)
+            const summaryResponses = applyCitationOrder(responses, rawSummarizedText)
 
             const sourceDocuments: Document[] = summaryResponses.map(
                 (response: { text: string; metadata: Record<string, unknown>; score: number }) =>

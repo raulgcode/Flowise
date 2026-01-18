@@ -128,7 +128,7 @@ class ConversationSummaryBufferMemoryExtended extends FlowiseSummaryBufferMemory
         const id = overrideSessionId ? overrideSessionId : this.sessionId
         if (!id) return []
 
-        let chatMessage = await this.appDataSource.getRepository(this.databaseEntities['ChatMessage']).find({
+        const chatMessage = await this.appDataSource.getRepository(this.databaseEntities['ChatMessage']).find({
             where: {
                 sessionId: id,
                 chatflowid: this.chatflowid
@@ -181,7 +181,7 @@ class ConversationSummaryBufferMemoryExtended extends FlowiseSummaryBufferMemory
             return baseMessages
         }
 
-        let returnIMessages: IMessage[] = []
+        const returnIMessages: IMessage[] = []
         for (const m of baseMessages) {
             returnIMessages.push({
                 message: m.content as string,

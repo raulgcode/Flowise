@@ -186,7 +186,7 @@ class BufferMemoryExtended extends FlowiseMemory implements MemoryMethods {
         const existingDynamoKey = this.dynamoKey
         const partitionKey = this.partitionKey
 
-        let newDynamoKey: Record<string, AttributeValue> = {}
+        const newDynamoKey: Record<string, AttributeValue> = {}
 
         if (Object.keys(existingDynamoKey).includes(partitionKey)) {
             newDynamoKey[partitionKey] = { S: overrideSessionId }

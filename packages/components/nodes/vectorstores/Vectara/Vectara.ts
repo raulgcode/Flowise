@@ -285,7 +285,7 @@ class Vectara_VectorStores implements INode {
 }
 
 const getFileName = (fileBase64: string) => {
-    let fileNames = []
+    const fileNames = []
     if (fileBase64.startsWith('[') && fileBase64.endsWith(']')) {
         const files = JSON.parse(fileBase64)
         for (const file of files) {

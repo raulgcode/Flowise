@@ -27,7 +27,7 @@ export const MultiDropdown = ({ name, value, options, onSelect, formControlSx = 
         return options.filter((option) => values.includes(option.name))
     }
     const getDefaultOptionValue = () => []
-    let [internalValue, setInternalValue] = useState(value ?? [])
+    const [internalValue, setInternalValue] = useState(value ?? [])
     const theme = useTheme()
 
     return (

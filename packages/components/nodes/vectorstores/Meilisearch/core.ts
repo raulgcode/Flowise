@@ -34,7 +34,7 @@ export class MeilisearchRetriever extends BaseRetriever {
         if (semanticRatio == '') {
             this.semanticRatio = '0.75'
         } else {
-            let semanticRatio_Float = parseFloat(semanticRatio)
+            const semanticRatio_Float = parseFloat(semanticRatio)
             if (semanticRatio_Float > 1.0) {
                 this.semanticRatio = '1.0'
             } else if (semanticRatio_Float < 0.0) {

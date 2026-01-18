@@ -8,7 +8,7 @@ async function errorHandlerMiddleware(err: InternalFlowiseError, req: Request, r
     const statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR
     if (err.message.includes('401 Incorrect API key provided'))
         err.message = '401 Invalid model key or Incorrect local model configuration.'
-    let displayedError = {
+    const displayedError = {
         statusCode,
         success: false,
         message: err.message,

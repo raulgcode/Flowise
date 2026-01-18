@@ -200,7 +200,7 @@ class ChatflowTool_Tools implements INode {
             toolInput = customInput
         }
 
-        let name = _name || 'chatflow_tool'
+        const name = _name || 'chatflow_tool'
 
         return new ChatflowTool({
             name,

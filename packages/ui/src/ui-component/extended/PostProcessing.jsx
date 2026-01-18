@@ -84,7 +84,7 @@ const PostProcessing = ({ dialogProps }) => {
 
     const onSave = async () => {
         try {
-            let value = {
+            const value = {
                 postProcessing: {
                     enabled: postProcessingEnabled,
                     customFunction: JSON.stringify(postProcessingFunction)
@@ -130,7 +130,7 @@ const PostProcessing = ({ dialogProps }) => {
 
     useEffect(() => {
         if (dialogProps.chatflow && dialogProps.chatflow.chatbotConfig) {
-            let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+            const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
             setChatbotConfig(chatbotConfig || {})
             if (chatbotConfig.postProcessing) {
                 setPostProcessingEnabled(chatbotConfig.postProcessing.enabled)

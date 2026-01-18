@@ -225,7 +225,7 @@ class ConversationalRetrievalQAChain_Chains implements INode {
         const loggerHandler = new ConsoleCallbackHandler(options.logger, options?.orgId)
         const additionalCallback = await additionalCallbacks(nodeData, options)
 
-        let callbacks = [loggerHandler, ...additionalCallback]
+        const callbacks = [loggerHandler, ...additionalCallback]
 
         if (process.env.DEBUG === 'true') {
             callbacks.push(new LCConsoleCallbackHandler())
@@ -451,7 +451,7 @@ class BufferMemory extends FlowiseMemory implements MemoryMethods {
             return await mapChatMessageToBaseMessage(chatMessage, this.orgId)
         }
 
-        let returnIMessages: IMessage[] = []
+        const returnIMessages: IMessage[] = []
         for (const m of chatMessage) {
             returnIMessages.push({
                 message: m.content as string,

@@ -101,17 +101,17 @@ const exportData = async (exportInput: ExportInput, activeWorkspaceId: string): 
             exportInput.agentflowv2 === true ? await chatflowService.getAllChatflows('AGENTFLOW', activeWorkspaceId) : []
         AgentFlowV2 = 'data' in AgentFlowV2 ? AgentFlowV2.data : AgentFlowV2
 
-        let AssistantCustom: Assistant[] =
+        const AssistantCustom: Assistant[] =
             exportInput.assistantCustom === true ? await assistantsService.getAllAssistants(activeWorkspaceId, 'CUSTOM') : []
 
         let AssistantFlow: ChatFlow[] | { data: ChatFlow[]; total: number } =
             exportInput.assistantCustom === true ? await chatflowService.getAllChatflows('ASSISTANT', activeWorkspaceId) : []
         AssistantFlow = 'data' in AssistantFlow ? AssistantFlow.data : AssistantFlow
 
-        let AssistantOpenAI: Assistant[] =
+        const AssistantOpenAI: Assistant[] =
             exportInput.assistantOpenAI === true ? await assistantsService.getAllAssistants(activeWorkspaceId, 'OPENAI') : []
 
-        let AssistantAzure: Assistant[] =
+        const AssistantAzure: Assistant[] =
             exportInput.assistantAzure === true ? await assistantsService.getAllAssistants(activeWorkspaceId, 'AZURE') : []
 
         let ChatFlow: ChatFlow[] | { data: ChatFlow[]; total: number } =
@@ -125,13 +125,13 @@ const exportData = async (exportInput: ExportInput, activeWorkspaceId: string): 
         allChatflow = 'data' in allChatflow ? allChatflow.data : allChatflow
         const chatflowIds = allChatflow.map((chatflow) => chatflow.id)
 
-        let ChatMessage: ChatMessage[] =
+        const ChatMessage: ChatMessage[] =
             exportInput.chat_message === true ? await chatMessagesService.getMessagesByChatflowIds(chatflowIds) : []
 
-        let ChatMessageFeedback: ChatMessageFeedback[] =
+        const ChatMessageFeedback: ChatMessageFeedback[] =
             exportInput.chat_feedback === true ? await chatMessagesService.getMessagesFeedbackByChatflowIds(chatflowIds) : []
 
-        let CustomTemplate: CustomTemplate[] =
+        const CustomTemplate: CustomTemplate[] =
             exportInput.custom_template === true ? await marketplacesService.getAllCustomTemplates(activeWorkspaceId) : []
 
         let DocumentStore: DocumentStore[] | { data: DocumentStore[]; total: number } =
@@ -140,14 +140,14 @@ const exportData = async (exportInput: ExportInput, activeWorkspaceId: string): 
 
         const documentStoreIds = DocumentStore.map((documentStore) => documentStore.id)
 
-        let DocumentStoreFileChunk: DocumentStoreFileChunk[] =
+        const DocumentStoreFileChunk: DocumentStoreFileChunk[] =
             exportInput.document_store === true
                 ? await documenStoreService.getAllDocumentFileChunksByDocumentStoreIds(documentStoreIds)
                 : []
 
         const filters: ExecutionFilters = { workspaceId: activeWorkspaceId }
         const { data: totalExecutions } = exportInput.execution === true ? await executionService.getAllExecutions(filters) : { data: [] }
-        let Execution: Execution[] = exportInput.execution === true ? totalExecutions : []
+        const Execution: Execution[] = exportInput.execution === true ? totalExecutions : []
 
         let Tool: Tool[] | { data: Tool[]; total: number } =
             exportInput.tool === true ? await toolsService.getAllTools(activeWorkspaceId) : []
@@ -190,7 +190,7 @@ async function replaceDuplicateIdsForChatFlow(queryRunner: QueryRunner, original
             where: { id: In(ids) }
         })
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))
@@ -211,7 +211,7 @@ async function replaceDuplicateIdsForAssistant(queryRunner: QueryRunner, origina
             where: { id: In(ids) }
         })
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))
@@ -459,7 +459,7 @@ async function replaceDuplicateIdsForCustomTemplate(queryRunner: QueryRunner, or
             where: { id: In(ids) }
         })
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))
@@ -480,7 +480,7 @@ async function replaceDuplicateIdsForDocumentStore(queryRunner: QueryRunner, ori
             where: { id: In(ids) }
         })
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))
@@ -530,7 +530,7 @@ async function replaceDuplicateIdsForTool(queryRunner: QueryRunner, originalData
             where: { id: In(ids) }
         })
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))
@@ -553,7 +553,7 @@ async function replaceDuplicateIdsForVariable(queryRunner: QueryRunner, original
         if (getRunningExpressApp().identityManager.getPlatformType() === Platform.CLOUD)
             originalData.Variable = originalData.Variable.filter((variable) => variable.type !== 'runtime')
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))
@@ -574,7 +574,7 @@ async function replaceDuplicateIdsForExecution(queryRunner: QueryRunner, origina
             where: { id: In(ids) }
         })
         if (records.length < 0) return originalData
-        for (let record of records) {
+        for (const record of records) {
             const oldId = record.id
             const newId = uuidv4()
             originalData = JSON.parse(JSON.stringify(originalData).replaceAll(oldId, newId))

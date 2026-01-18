@@ -21,7 +21,7 @@ export class EvaluationRunTracer extends RunCollectorCallbackHandler {
         if (encoding) {
             if (run.inputs?.messages?.length > 0 && run.inputs?.messages[0]?.length > 0) {
                 run.inputs.messages[0].map((message: any) => {
-                    let content = message.content
+                    const content = message.content
                         ? message.content
                         : message.SystemMessage?.content
                         ? message.SystemMessage.content
@@ -46,7 +46,7 @@ export class EvaluationRunTracer extends RunCollectorCallbackHandler {
         if (encoding) {
             if (run.outputs?.generations?.length > 0 && run.outputs?.generations[0]?.length > 0) {
                 run.outputs?.generations[0].map((chunk: any) => {
-                    let content = chunk.text ? chunk.text : chunk.message?.content ? chunk.message?.content : undefined
+                    const content = chunk.text ? chunk.text : chunk.message?.content ? chunk.message?.content : undefined
                     completionTokenCount += content ? encoding.encode(content).length : 0
                 })
             }
@@ -77,7 +77,7 @@ export class EvaluationRunTracer extends RunCollectorCallbackHandler {
             )
         }
 
-        let model = this.extractModelName(run)
+        const model = this.extractModelName(run)
         if (run.outputs?.llmOutput?.tokenUsage) {
             const tokenUsage = run.outputs?.llmOutput?.tokenUsage
             if (tokenUsage) {
@@ -138,13 +138,13 @@ export class EvaluationRunTracer extends RunCollectorCallbackHandler {
         const json = {
             [run.run_type]: elapsed(run)
         }
-        let metric = JSON.stringify(json)
+        const metric = JSON.stringify(json)
         if (metric) {
             EvaluationRunner.addMetrics(this.evaluationRunId, metric)
         }
 
         if (run.run_type === 'llm') {
-            let model = this.extractModelName(run)
+            const model = this.extractModelName(run)
             if (model) {
                 EvaluationRunner.addMetrics(this.evaluationRunId, JSON.stringify({ model: model }))
                 this.model = model

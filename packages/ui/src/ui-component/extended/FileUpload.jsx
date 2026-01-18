@@ -131,7 +131,7 @@ const FileUpload = ({ dialogProps }) => {
         if (dialogProps.chatflow) {
             if (dialogProps.chatflow.chatbotConfig) {
                 try {
-                    let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+                    const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
                     setChatbotConfig(chatbotConfig || {})
                     if (chatbotConfig.fullFileUpload) {
                         setFullFileUpload(chatbotConfig.fullFileUpload.status)

@@ -306,7 +306,7 @@ export const getEndingNodes = (
         }
     })
 
-    let endingNodes = allNodes.filter((nd) => endingNodeIds.includes(nd.id))
+    const endingNodes = allNodes.filter((nd) => endingNodeIds.includes(nd.id))
 
     // If there are multiple endingnodes, the failed ones will be automatically ignored.
     // And only ensure that at least one can pass the verification.
@@ -354,7 +354,7 @@ export const getEndingNodes = (
  * @param {string} fileBase64
  */
 export const getFileName = (fileBase64: string): string => {
-    let fileNames = []
+    const fileNames = []
     if (fileBase64.startsWith('FILE-STORAGE::')) {
         const names = fileBase64.substring(14)
         if (names.includes('[') && names.includes(']')) {
@@ -547,7 +547,7 @@ export const buildFlow = async ({
 }: BuildFlowParams) => {
     const flowNodes = cloneDeep(reactFlowNodes)
 
-    let upsertHistory: Record<string, any> = {}
+    const upsertHistory: Record<string, any> = {}
 
     // Create a Queue and add our initial node in it
     const nodeQueue = [] as INodeQueue[]
@@ -841,7 +841,7 @@ export const getGlobalVariable = async (
         }
     }
 
-    let vars = {}
+    const vars = {}
     if (availableVariables.length) {
         for (const item of availableVariables) {
             let value = item.value
@@ -1033,7 +1033,7 @@ export const resolveVariables = async (
     availableVariables: IVariable[] = [],
     variableOverrides: ICommonObject[] = []
 ): Promise<INodeData> => {
-    let flowNodeData = cloneDeep(reactFlowNodeData)
+    const flowNodeData = cloneDeep(reactFlowNodeData)
 
     const getParamValues = async (paramsObj: ICommonObject) => {
         for (const key in paramsObj) {

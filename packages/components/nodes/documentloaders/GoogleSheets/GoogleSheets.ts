@@ -208,7 +208,7 @@ class GoogleSheets_DocumentLoaders implements INode {
             throw new Error('At least one spreadsheet is required')
         }
 
-        let spreadsheetIds = convertMultiOptionsToStringArray(_spreadsheetIds)
+        const spreadsheetIds = convertMultiOptionsToStringArray(_spreadsheetIds)
 
         let credentialData = await getCredentialData(nodeData.credential ?? '', options)
         credentialData = await refreshOAuth2Token(nodeData.credential ?? '', credentialData, options)

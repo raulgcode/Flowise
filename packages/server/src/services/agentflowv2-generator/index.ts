@@ -101,8 +101,8 @@ const getAllToolNodes = async () => {
 
 const getAllAgentflowv2Marketplaces = async () => {
     const templates: AgentFlowV2Template[] = []
-    let marketplaceDir = path.join(__dirname, '..', '..', '..', 'marketplaces', 'agentflowsv2')
-    let jsonsInDir = fs.readdirSync(marketplaceDir).filter((file) => path.extname(file) === '.json')
+    const marketplaceDir = path.join(__dirname, '..', '..', '..', 'marketplaces', 'agentflowsv2')
+    const jsonsInDir = fs.readdirSync(marketplaceDir).filter((file) => path.extname(file) === '.json')
     jsonsInDir.forEach((file) => {
         try {
             const filePath = path.join(__dirname, '..', '..', '..', 'marketplaces', 'agentflowsv2', file)

@@ -129,7 +129,7 @@ class MongoDBAtlas_VectorStores implements INode {
             let embeddingKey = nodeData.inputs?.embeddingKey as string
             const embeddings = nodeData.inputs?.embeddings as Embeddings
 
-            let mongoDBConnectUrl = getCredentialParam('mongoDBConnectUrl', credentialData, nodeData)
+            const mongoDBConnectUrl = getCredentialParam('mongoDBConnectUrl', credentialData, nodeData)
 
             const docs = nodeData.inputs?.document as Document[]
 
@@ -171,7 +171,7 @@ class MongoDBAtlas_VectorStores implements INode {
         const embeddings = nodeData.inputs?.embeddings as Embeddings
         const mongoMetadataFilter = nodeData.inputs?.mongoMetadataFilter as object
 
-        let mongoDBConnectUrl = getCredentialParam('mongoDBConnectUrl', credentialData, nodeData)
+        const mongoDBConnectUrl = getCredentialParam('mongoDBConnectUrl', credentialData, nodeData)
 
         const mongoDbFilter: MongoDBAtlasVectorSearch['FilterType'] = {}
 

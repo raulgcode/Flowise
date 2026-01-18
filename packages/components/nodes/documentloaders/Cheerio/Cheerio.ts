@@ -140,7 +140,7 @@ class Cheerio_DocumentLoaders implements INode {
 
         const selector: SelectorType = nodeData.inputs?.selector as SelectorType
 
-        let params: WebBaseLoaderParams = {}
+        const params: WebBaseLoaderParams = {}
         if (selector) {
             parse(selector) // comes with cheerio - will throw error if invalid
             params['selector'] = selector

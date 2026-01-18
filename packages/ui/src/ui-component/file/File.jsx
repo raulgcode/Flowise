@@ -31,7 +31,7 @@ export const File = ({ value, formDataUpload, fileType, onChange, onFormDataChan
             }
             reader.readAsDataURL(file)
         } else if (e.target.files.length > 0) {
-            let files = Array.from(e.target.files).map((file) => {
+            const files = Array.from(e.target.files).map((file) => {
                 const reader = new FileReader()
                 const { name } = file
 

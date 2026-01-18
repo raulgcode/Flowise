@@ -115,7 +115,7 @@ class Confluence_DocumentLoaders implements INode {
         const personalAccessToken = getCredentialParam('personalAccessToken', credentialData, nodeData)
         const username = getCredentialParam('username', credentialData, nodeData)
 
-        let confluenceOptions: ConfluencePagesLoaderParams = {
+        const confluenceOptions: ConfluencePagesLoaderParams = {
             baseUrl,
             spaceKey,
             limit

@@ -340,7 +340,7 @@ class AirtableLoader extends BaseDocumentLoader {
     }
 
     private async loadLimit(): Promise<IDocument[]> {
-        let data: AirtableLoaderRequest = {
+        const data: AirtableLoaderRequest = {
             maxRecords: this.limit,
             view: this.viewId
         }
@@ -354,7 +354,7 @@ class AirtableLoader extends BaseDocumentLoader {
         }
 
         let response: AirtableLoaderResponse
-        let returnPages: AirtableLoaderPage[] = []
+        const returnPages: AirtableLoaderPage[] = []
 
         // Paginate if the user specifies a limit > 100 (like 200) but not return all.
         do {
@@ -375,7 +375,7 @@ class AirtableLoader extends BaseDocumentLoader {
     }
 
     private async loadAll(): Promise<IDocument[]> {
-        let data: AirtableLoaderRequest = {
+        const data: AirtableLoaderRequest = {
             view: this.viewId
         }
 
@@ -388,7 +388,7 @@ class AirtableLoader extends BaseDocumentLoader {
         }
 
         let response: AirtableLoaderResponse
-        let returnPages: AirtableLoaderPage[] = []
+        const returnPages: AirtableLoaderPage[] = []
 
         do {
             response = await this.fetchAirtableData(`https://api.airtable.com/v0/${this.baseId}/${this.tableId}/listRecords`, data)

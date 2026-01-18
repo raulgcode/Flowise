@@ -51,7 +51,7 @@ const jwtOptions = {
 
 const _initializePassportMiddleware = async (app: express.Application) => {
     // Configure session middleware
-    let options: any = {
+    const options: any = {
         secret: process.env.EXPRESS_SESSION_SECRET || 'flowise',
         resave: false,
         saveUninitialized: false,
@@ -151,7 +151,7 @@ export const initializeJwtCookieMiddleware = async (app: express.Application, id
                         } as IAssignedWorkspace
                     })
 
-                    let roleService = new RoleService()
+                    const roleService = new RoleService()
                     const ownerRole = await roleService.readGeneralRoleByName(GeneralRole.OWNER, queryRunner)
                     const role = await roleService.readRoleById(workspaceUser.roleId, queryRunner)
                     if (!role) throw new InternalFlowiseError(StatusCodes.NOT_FOUND, RoleErrorMessage.ROLE_NOT_FOUND)
@@ -321,7 +321,7 @@ export const setTokenOrCookies = (
         const dashboardUrl = `/sso-success?token=${ssoToken}`
 
         // Return the token as a cookie in our response.
-        let resWithCookies = res
+        const resWithCookies = res
             .cookie('token', token, {
                 httpOnly: true,
                 secure: secureCookie,
@@ -356,7 +356,7 @@ export const generateJwtAuthToken = (user: any) => {
         const jwtHeader = jwt.decode(user.ssoToken, { complete: true })
         if (jwtHeader) {
             const utcSeconds = (jwtHeader.payload as any).exp
-            let d = new Date(0) // The 0 there is the key, which sets the date to the epoch
+            const d = new Date(0) // The 0 there is the key, which sets the date to the epoch
             d.setUTCSeconds(utcSeconds)
             // get the minutes difference from current time
             expiryInMinutes = Math.abs(d.getTime() - new Date().getTime()) / 60000
@@ -375,7 +375,7 @@ export const generateJwtRefreshToken = (user: any) => {
         if (jwtHeader && typeof jwtHeader !== 'string') {
             const utcSeconds = (jwtHeader as JwtPayload).exp
             if (utcSeconds) {
-                let d = new Date(0) // The 0 there is the key, which sets the date to the epoch
+                const d = new Date(0) // The 0 there is the key, which sets the date to the epoch
                 d.setUTCSeconds(utcSeconds)
                 // get the minutes difference from current time
                 expiryInMinutes = Math.abs(d.getTime() - new Date().getTime()) / 60000

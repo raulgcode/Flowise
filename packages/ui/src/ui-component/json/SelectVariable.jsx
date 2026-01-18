@@ -31,7 +31,7 @@ const SelectVariable = ({ availableNodesForVariable, disabled = false, onSelectA
     const customization = useSelector((state) => state.customization)
 
     const onSelectOutputResponseClick = (node, prefix) => {
-        let variablePath = node ? `${node.id}.data.instance` : prefix
+        const variablePath = node ? `${node.id}.data.instance` : prefix
         const newInput = `{{${variablePath}}}`
         onSelectAndReturnVal(newInput)
     }

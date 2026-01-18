@@ -217,7 +217,7 @@ class GraphCypherQA_Chain implements INode {
 
         const loggerHandler = new ConsoleCallbackHandler(options.logger, options?.orgId)
         const callbackHandlers = await additionalCallbacks(nodeData, options)
-        let callbacks = [loggerHandler, ...callbackHandlers]
+        const callbacks = [loggerHandler, ...callbackHandlers]
 
         if (process.env.DEBUG === 'true') {
             callbacks.push(new LCConsoleCallbackHandler())

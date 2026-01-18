@@ -81,7 +81,7 @@ const ViewLeadsDialog = ({ show, dialogProps, onCancel }) => {
 
         const exportFileDefaultName = `${dialogProps.chatflow.id}-leads.json`
 
-        let linkElement = document.createElement('a')
+        const linkElement = document.createElement('a')
         linkElement.setAttribute('href', dataUri)
         linkElement.setAttribute('download', exportFileDefaultName)
         linkElement.click()

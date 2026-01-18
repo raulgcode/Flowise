@@ -815,7 +815,7 @@ export class AnalyticHandler {
             const arizeEndpoint = getCredentialParam('arizeEndpoint', credentialData, this.nodeData)
             const arizeProject = providerConfig.projectName as string
 
-            let arizeOptions: ArizeTracerOptions = {
+            const arizeOptions: ArizeTracerOptions = {
                 apiKey: arizeApiKey,
                 spaceId: arizeSpaceId,
                 baseUrl: arizeEndpoint ?? 'https://otlp.arize.com',
@@ -833,7 +833,7 @@ export class AnalyticHandler {
             const phoenixEndpoint = getCredentialParam('phoenixEndpoint', credentialData, this.nodeData)
             const phoenixProject = providerConfig.projectName as string
 
-            let phoenixOptions: PhoenixTracerOptions = {
+            const phoenixOptions: PhoenixTracerOptions = {
                 apiKey: phoenixApiKey,
                 baseUrl: phoenixEndpoint ?? 'https://app.phoenix.arize.com',
                 projectName: phoenixProject ?? 'default',
@@ -851,7 +851,7 @@ export class AnalyticHandler {
             const opikWorkspace = getCredentialParam('opikWorkspace', credentialData, this.nodeData)
             const opikProject = providerConfig.opikProjectName as string
 
-            let opikOptions: OpikTracerOptions = {
+            const opikOptions: OpikTracerOptions = {
                 apiKey: opikApiKey,
                 baseUrl: opikEndpoint ?? 'https://www.comet.com/opik/api',
                 projectName: opikProject ?? 'default',

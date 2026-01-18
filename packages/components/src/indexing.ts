@@ -253,7 +253,7 @@ export async function index(args: IndexArgs): Promise<IndexingResult> {
 
     const indexStartDt = await recordManager.getTime()
     let numAdded = 0
-    let addedDocs: Document[] = []
+    const addedDocs: Document[] = []
     let numDeleted = 0
     let numUpdated = 0
     let numSkipped = 0

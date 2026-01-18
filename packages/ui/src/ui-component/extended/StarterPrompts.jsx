@@ -55,7 +55,7 @@ const StarterPrompts = ({ dialogProps, onConfirm }) => {
 
     const onSave = async () => {
         try {
-            let value = {
+            const value = {
                 starterPrompts: {
                     ...inputFields
                 }
@@ -102,10 +102,10 @@ const StarterPrompts = ({ dialogProps, onConfirm }) => {
     useEffect(() => {
         if (dialogProps.chatflow && dialogProps.chatflow.chatbotConfig) {
             try {
-                let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+                const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
                 setChatbotConfig(chatbotConfig || {})
                 if (chatbotConfig.starterPrompts) {
-                    let inputFields = []
+                    const inputFields = []
                     Object.getOwnPropertyNames(chatbotConfig.starterPrompts).forEach((key) => {
                         if (chatbotConfig.starterPrompts[key]) {
                             inputFields.push(chatbotConfig.starterPrompts[key])

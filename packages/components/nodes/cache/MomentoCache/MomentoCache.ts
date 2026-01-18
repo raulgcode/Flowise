@@ -47,7 +47,7 @@ class MomentoCache implements INode {
             defaultTtlSeconds: 60 * 60 * 24
         })
 
-        let momentoCache = await LangchainMomentoCache.fromProps({
+        const momentoCache = await LangchainMomentoCache.fromProps({
             client,
             cacheName: cacheName
         })

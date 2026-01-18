@@ -96,7 +96,7 @@ class DynamicStructuredTool<T extends z.ZodObject<any, any, any, any> = z.ZodObj
 
     // @ts-ignore
     protected _call(arg: any, runManager?: CallbackManagerForToolRun, flowConfig?: IFlowConfig): Promise<string> {
-        let flowConfiguration: ICommonObject = {}
+        const flowConfiguration: ICommonObject = {}
         if (typeof arg === 'object' && Object.keys(arg).length) {
             for (const item in arg) {
                 flowConfiguration[`$${item}`] = arg[item]

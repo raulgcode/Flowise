@@ -126,7 +126,7 @@ class Airtable_Agents implements INode {
             airtableData = await loadLimit(limit ? parseInt(limit, 10) : 100, baseId, tableId, accessToken)
         }
 
-        let base64String = Buffer.from(JSON.stringify(airtableData)).toString('base64')
+        const base64String = Buffer.from(JSON.stringify(airtableData)).toString('base64')
 
         const loggerHandler = new ConsoleCallbackHandler(options.logger, options?.orgId)
         const callbacks = await additionalCallbacks(nodeData, options)
@@ -241,7 +241,7 @@ const fetchAirtableData = async (url: string, params: ICommonObject, accessToken
 const loadAll = async (baseId: string, tableId: string, accessToken: string): Promise<ICommonObject[]> => {
     const params: ICommonObject = { pageSize: 100 }
     let data: AirtableLoaderResponse
-    let returnPages: AirtableLoaderPage[] = []
+    const returnPages: AirtableLoaderPage[] = []
 
     do {
         data = await fetchAirtableData(`https://api.airtable.com/v0/${baseId}/${tableId}`, params, accessToken)

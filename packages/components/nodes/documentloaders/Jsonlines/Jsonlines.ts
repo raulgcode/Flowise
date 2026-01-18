@@ -126,7 +126,7 @@ class Jsonlines_DocumentLoaders implements INode {
         let docs: IDocument[] = []
         let files: string[] = []
 
-        let pointer = '/' + pointerName.trim()
+        const pointer = '/' + pointerName.trim()
         //FILE-STORAGE::["CONTRIBUTING.md","LICENSE.md","README.md"]
         if (jsonLinesFileBase64.startsWith('FILE-STORAGE::')) {
             const fileName = jsonLinesFileBase64.replace('FILE-STORAGE::', '')
@@ -316,7 +316,7 @@ class JSONLinesLoader extends TextLoader {
         const pointer = jsonpointer.compile(this.pointer)
         if (this.metadata) {
             const values = Object.values(this.metadata).filter((value) => typeof value === 'string' && value.startsWith('/'))
-            let newJsons = []
+            const newJsons = []
             for (const json of jsons) {
                 let metadata = {}
                 for (const value of values) {

@@ -120,10 +120,10 @@ export class EvaluationRunner {
             if (apiKey) {
                 headers['Authorization'] = `Bearer ${apiKey}`
             }
-            let axiosConfig = {
+            const axiosConfig = {
                 headers: headers
             }
-            let startTime = performance.now()
+            const startTime = performance.now()
             const runData: any = {}
             runData.chatflowId = chatflowId
             runData.startTime = startTime
@@ -132,8 +132,8 @@ export class EvaluationRunner {
                 postData.overrideConfig = { sessionId: data.sessionId }
             }
             try {
-                let response = await axios.post(`${this.baseURL}/api/v1/prediction/${chatflowId}`, postData, axiosConfig)
-                let agentFlowMetrics: any[] = []
+                const response = await axios.post(`${this.baseURL}/api/v1/prediction/${chatflowId}`, postData, axiosConfig)
+                const agentFlowMetrics: any[] = []
                 if (response?.data?.agentFlowExecutedData) {
                     for (let i = 0; i < response.data.agentFlowExecutedData.length; i++) {
                         const agentFlowExecutedData = response.data.agentFlowExecutedData[i]

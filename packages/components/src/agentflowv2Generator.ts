@@ -414,7 +414,7 @@ const generateNodesData = (result: Record<string, any>, config: Record<string, a
             return result
         }
 
-        let nodes = result.nodes
+        const nodes = result.nodes
 
         for (let i = 0; i < nodes.length; i += 1) {
             const node = nodes[i]
@@ -475,7 +475,7 @@ const initNode = (nodeData: Record<string, any>, newNodeId: string): NodeData =>
     }
 
     // Outputs
-    let outputAnchors = initializeOutputAnchors(nodeData, newNodeId)
+    const outputAnchors = initializeOutputAnchors(nodeData, newNodeId)
 
     /* Initial
     inputs = [

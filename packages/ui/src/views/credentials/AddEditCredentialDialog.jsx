@@ -168,7 +168,7 @@ const AddEditCredentialDialog = ({ show, dialogProps, onCancel, onConfirm, setEr
                 credentialName: componentCredential.name
             }
 
-            let plainDataObj = {}
+            const plainDataObj = {}
             for (const key in credentialData) {
                 if (credentialData[key] !== REDACTED_CREDENTIAL_VALUE) {
                     plainDataObj[key] = credentialData[key]
@@ -236,7 +236,7 @@ const AddEditCredentialDialog = ({ show, dialogProps, onCancel, onConfirm, setEr
                     credentialName: componentCredential.name
                 }
 
-                let plainDataObj = {}
+                const plainDataObj = {}
                 for (const key in credentialData) {
                     if (credentialData[key] !== REDACTED_CREDENTIAL_VALUE) {
                         plainDataObj[key] = credentialData[key]

@@ -1,13 +1,27 @@
-import PropTypes from 'prop-types'
-import { forwardRef } from 'react'
-// third-party
+import { forwardRef, ReactNode } from 'react'
 import { motion, useCycle } from 'framer-motion'
 
 // ==============================|| ANIMATION BUTTON ||============================== //
 
-const AnimateButton = forwardRef(function AnimateButton({ children, type, direction, offset, scale }, ref) {
-    let offset1
-    let offset2
+export interface AnimateButtonScale {
+    hover: number
+    tap: number
+}
+
+export interface AnimateButtonProps {
+    children?: ReactNode
+    type?: 'slide' | 'scale' | 'rotate'
+    direction?: 'up' | 'down' | 'left' | 'right'
+    offset?: number
+    scale?: number | AnimateButtonScale
+}
+
+const AnimateButton = forwardRef<HTMLDivElement, AnimateButtonProps>(function AnimateButton(
+    { children, type = 'scale', direction = 'right', offset = 10, scale = { hover: 1, tap: 0.9 } },
+    ref
+) {
+    let offset1: number
+    let offset2: number
     switch (direction) {
         case 'up':
         case 'left':
@@ -61,37 +75,15 @@ const AnimateButton = forwardRef(function AnimateButton({ children, type, direct
             )
 
         case 'scale':
-        default:
-            if (typeof scale === 'number') {
-                scale = {
-                    hover: scale,
-                    tap: scale
-                }
-            }
+        default: {
+            const scaleConfig: AnimateButtonScale = typeof scale === 'number' ? { hover: scale, tap: scale } : scale
             return (
-                <motion.div ref={ref} whileHover={{ scale: scale?.hover }} whileTap={{ scale: scale?.tap }}>
+                <motion.div ref={ref} whileHover={{ scale: scaleConfig.hover }} whileTap={{ scale: scaleConfig.tap }}>
                     {children}
                 </motion.div>
             )
+        }
     }
 })
-
-AnimateButton.propTypes = {
-    children: PropTypes.node,
-    offset: PropTypes.number,
-    type: PropTypes.oneOf(['slide', 'scale', 'rotate']),
-    direction: PropTypes.oneOf(['up', 'down', 'left', 'right']),
-    scale: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
-}
-
-AnimateButton.defaultProps = {
-    type: 'scale',
-    offset: 10,
-    direction: 'right',
-    scale: {
-        hover: 1,
-        tap: 0.9
-    }
-}
 
 export default AnimateButton

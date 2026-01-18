@@ -176,7 +176,7 @@ const LoginActivity = () => {
         const {
             target: { value }
         } = event
-        let newVar = typeof value === 'string' ? value.split(',') : value
+        const newVar = typeof value === 'string' ? value.split(',') : value
         setTypeFilter(newVar)
         refreshData(currentPage, startDate, endDate, newVar)
     }

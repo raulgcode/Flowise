@@ -25,7 +25,7 @@ export class LLMEvaluationRunner {
                 }
                 try {
                     const llmEvaluator = llmEvaluatorMap[i]
-                    let evaluator = llmEvaluator.evaluator
+                    const evaluator = llmEvaluator.evaluator
                     const schema = z.object(convertSchemaToZod(JSON.stringify(evaluator.outputSchema)))
                     const modelWithStructuredOutput = this.llm.withStructuredOutput(schema)
                     const llmExecutor = RunnableSequence.from([
@@ -54,7 +54,7 @@ export class LLMEvaluationRunner {
             const nodeInstanceFilePath = appServer.nodesPool.componentNodes[data.llmConfig.llm].filePath as string
             const nodeModule = await import(nodeInstanceFilePath)
             const newNodeInstance = new nodeModule.nodeClass()
-            let nodeData = {
+            const nodeData = {
                 inputs: { modelName: data.llmConfig.model },
                 credential: data.llmConfig.credentialId,
                 id: 'llm_0'

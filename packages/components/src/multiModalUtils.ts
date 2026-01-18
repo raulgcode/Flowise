@@ -7,7 +7,7 @@ export const addImagesToMessages = async (
     multiModalOption?: IMultiModalOption
 ): Promise<MessageContentImageUrl[]> => {
     const imageContent: MessageContentImageUrl[] = []
-    let model = nodeData.inputs?.model
+    const model = nodeData.inputs?.model
 
     if (llmSupportsVision(model) && multiModalOption) {
         // Image Uploaded

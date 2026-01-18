@@ -7,7 +7,7 @@ export class AddPersonalWorkspace1734074497540 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         const users = await queryRunner.query(`select * from \`user\`;`)
         const organization = await queryRunner.query(`select \`id\` from \`organization\`;`)
-        for (let user of users) {
+        for (const user of users) {
             const workspaceDescription = 'Personal Workspace of ' + user.id
             const workspaceId = uuidv4()
 

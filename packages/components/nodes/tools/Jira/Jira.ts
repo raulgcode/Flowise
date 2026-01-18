@@ -371,7 +371,7 @@ class Jira_Tools implements INode {
     }
 
     async init(nodeData: INodeData, _: string, options: ICommonObject): Promise<any> {
-        let credentialData = await getCredentialData(nodeData.credential ?? '', options)
+        const credentialData = await getCredentialData(nodeData.credential ?? '', options)
         const username = getCredentialParam('username', credentialData, nodeData)
         const accessToken = getCredentialParam('accessToken', credentialData, nodeData)
         const jiraHost = nodeData.inputs?.jiraHost as string

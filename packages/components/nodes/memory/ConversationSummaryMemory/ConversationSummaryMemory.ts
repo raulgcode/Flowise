@@ -119,7 +119,7 @@ class ConversationSummaryMemoryExtended extends FlowiseSummaryMemory implements 
         if (!id) return []
 
         this.buffer = ''
-        let chatMessage = await this.appDataSource.getRepository(this.databaseEntities['ChatMessage']).find({
+        const chatMessage = await this.appDataSource.getRepository(this.databaseEntities['ChatMessage']).find({
             where: {
                 sessionId: id,
                 chatflowid: this.chatflowid
@@ -158,7 +158,7 @@ class ConversationSummaryMemoryExtended extends FlowiseSummaryMemory implements 
             ]
         }
 
-        let returnIMessages: IMessage[] = []
+        const returnIMessages: IMessage[] = []
         for (const m of chatMessage) {
             returnIMessages.push({
                 message: m.content as string,

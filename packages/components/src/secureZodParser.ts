@@ -362,7 +362,7 @@ export class SecureZodSchemaParser {
         // Find the matching closing parenthesis for z.array(
         let depth = 0
         let arrayEndIndex = -1
-        let startIndex = typeStr.indexOf('z.array(') + 7 // Position after "z.array"
+        const startIndex = typeStr.indexOf('z.array(') + 7 // Position after "z.array"
 
         for (let i = startIndex; i < typeStr.length; i++) {
             if (typeStr[i] === '(') depth++
@@ -414,7 +414,7 @@ export class SecureZodSchemaParser {
         let braceDepth = 0
         let parenDepth = 0
         let objectEndIndex = -1
-        let startIndex = typeStr.indexOf('z.object(') + 8 // Position after "z.object"
+        const startIndex = typeStr.indexOf('z.object(') + 8 // Position after "z.object"
         let foundOpenBrace = false
 
         for (let i = startIndex; i < typeStr.length; i++) {
@@ -462,7 +462,7 @@ export class SecureZodSchemaParser {
             if (i < remainingPart.length && remainingPart[i] === '(') {
                 // Find matching closing paren, handling nested structures
                 let depth = 0
-                let argStart = i
+                const argStart = i
                 for (let j = i; j < remainingPart.length; j++) {
                     if (remainingPart[j] === '(') depth++
                     else if (remainingPart[j] === ')') {

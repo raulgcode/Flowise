@@ -405,7 +405,7 @@ const jsonSchemaToZodSchema = (schema: any, requiredList: string[], keyName: str
             ? numberSchema.describe(schema?.description ?? keyName)
             : numberSchema.describe(schema?.description ?? keyName).optional()
     } else if (schema.type === 'integer') {
-        let numberSchema = z.number().int()
+        const numberSchema = z.number().int()
         return requiredList.includes(keyName)
             ? numberSchema.describe(schema?.description ?? keyName)
             : numberSchema.describe(schema?.description ?? keyName).optional()

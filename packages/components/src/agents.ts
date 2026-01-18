@@ -363,9 +363,9 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
 
         const steps: AgentStep[] = []
         let iterations = 0
-        let sourceDocuments: Array<Document> = []
+        const sourceDocuments: Array<Document> = []
         const usedTools: IUsedTool[] = []
-        let artifacts: any[] = []
+        const artifacts: any[] = []
 
         const getOutput = async (finishStep: AgentFinish): Promise<AgentExecutorOutput> => {
             const { returnValues } = finishStep

@@ -337,7 +337,7 @@ class LLM_Agentflow implements INode {
 
     async run(nodeData: INodeData, input: string | Record<string, any>, options: ICommonObject): Promise<any> {
         let llmIds: ICommonObject | undefined
-        let analyticHandlers = options.analyticHandlers as AnalyticHandler
+        const analyticHandlers = options.analyticHandlers as AnalyticHandler
 
         try {
             const abortController = options.abortController as AbortController
@@ -381,9 +381,9 @@ class LLM_Agentflow implements INode {
             // Prepare messages array
             const messages: BaseMessageLike[] = []
             // Use to store messages with image file references as we do not want to store the base64 data into database
-            let runtimeImageMessagesWithFileRef: BaseMessageLike[] = []
+            const runtimeImageMessagesWithFileRef: BaseMessageLike[] = []
             // Use to keep track of past messages with image file references
-            let pastImageMessagesWithFileRef: BaseMessageLike[] = []
+            const pastImageMessagesWithFileRef: BaseMessageLike[] = []
 
             // Prepend history ONLY if it is the first node
             if (prependedChatHistory.length > 0 && !runtimeChatHistory.length) {

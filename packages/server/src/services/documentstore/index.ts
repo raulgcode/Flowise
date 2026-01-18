@@ -574,7 +574,7 @@ const _splitIntoChunks = async (
             const nodeInstanceFilePath = componentNodes[data.splitterId].filePath as string
             const nodeModule = await import(nodeInstanceFilePath)
             const newNodeInstance = new nodeModule.nodeClass()
-            let nodeData = {
+            const nodeData = {
                 inputs: { ...data.splitterConfig },
                 id: 'splitter_0'
             }
@@ -598,7 +598,7 @@ const _splitIntoChunks = async (
             workspaceId
         }
         const docNodeInstance = new nodeModule.nodeClass()
-        let docs: IDocument[] = await docNodeInstance.init(nodeData, '', options)
+        const docs: IDocument[] = await docNodeInstance.init(nodeData, '', options)
         return docs
     } catch (error) {
         throw new InternalFlowiseError(
@@ -771,7 +771,7 @@ const saveProcessingLoader = async (
                 data.credential = found.credential
             }
 
-            let loader: IDocumentStoreLoader = {
+            const loader: IDocumentStoreLoader = {
                 ...found,
                 loaderId: data.loaderId,
                 loaderName: data.loaderName,
@@ -790,7 +790,7 @@ const saveProcessingLoader = async (
             existingLoaders[foundIndex] = loader
             entity.loaders = JSON.stringify(existingLoaders)
         } else {
-            let loader: IDocumentStoreLoader = {
+            const loader: IDocumentStoreLoader = {
                 id: newDocLoaderId,
                 loaderId: data.loaderId,
                 loaderName: data.loaderName,
@@ -972,7 +972,7 @@ const _saveChunksToStorage = async (
         }
 
         //step 4: save new file to storage
-        let filesWithMetadata = []
+        const filesWithMetadata = []
         const keys = Object.getOwnPropertyNames(data.loaderConfig)
         for (let i = 0; i < keys.length; i++) {
             const input = data.loaderConfig[keys[i]]
@@ -1345,7 +1345,7 @@ const _insertIntoVectorStoreWorkerThread = async (
         if (!entity) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Document store ${data.storeId} not found`)
         }
-        let upsertHistory: Record<string, any> = {}
+        const upsertHistory: Record<string, any> = {}
         const chatflowid = data.storeId // fake chatflowid because this is not tied to any chatflow
 
         const options: ICommonObject = {
@@ -1497,7 +1497,7 @@ const queryVectorStore = async (data: ICommonObject) => {
         const embeddingConfig = JSON.parse(entity.embeddingConfig)
         data.embeddingName = embeddingConfig.name
         data.embeddingConfig = embeddingConfig.config
-        let embeddingObj = await _createEmbeddingsObject(componentNodes, data, options)
+        const embeddingObj = await _createEmbeddingsObject(componentNodes, data, options)
 
         const vsConfig = JSON.parse(entity.vectorStoreConfig)
         data.vectorStoreName = vsConfig.name

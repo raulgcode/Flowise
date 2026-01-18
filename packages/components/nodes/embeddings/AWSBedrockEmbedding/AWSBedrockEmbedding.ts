@@ -223,11 +223,11 @@ const processInBatches = async (
 ): Promise<number[][]> => {
     let sleepTime = 0
     let retryCounter = 0
-    let result: number[][] = []
+    const result: number[][] = []
     for (let i = 0; i < documents.length; i += batchSize) {
-        let chunk = documents.slice(i, i + batchSize)
+        const chunk = documents.slice(i, i + batchSize)
         try {
-            let chunkResult = await Promise.all(chunk.map(processFunc))
+            const chunkResult = await Promise.all(chunk.map(processFunc))
             result.push(...chunkResult)
             retryCounter = 0
         } catch (e) {

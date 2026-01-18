@@ -211,7 +211,7 @@ const PromptLangsmithHubDialog = ({ promptType, show, onCancel, onSubmit }) => {
     }
 
     const removeDuplicates = (value) => {
-        let duplicateRemoved = []
+        const duplicateRemoved = []
 
         value.forEach((item) => {
             if (value.filter((o) => o.id === item.id).length === 1) {

@@ -100,7 +100,7 @@ const ToolDialog = ({ show, dialogProps, onUseTemplate, onCancel, onConfirm, set
     const addNewRow = () => {
         setTimeout(() => {
             setToolSchema((prevRows) => {
-                let allRows = [...cloneDeep(prevRows)]
+                const allRows = [...cloneDeep(prevRows)]
                 const lastRowId = allRows.length ? allRows[allRows.length - 1].id + 1 : 1
                 allRows.push({
                     id: lastRowId,
@@ -131,7 +131,7 @@ const ToolDialog = ({ show, dialogProps, onUseTemplate, onCancel, onConfirm, set
     const onRowUpdate = (newRow) => {
         setTimeout(() => {
             setToolSchema((prevRows) => {
-                let allRows = [...cloneDeep(prevRows)]
+                const allRows = [...cloneDeep(prevRows)]
                 const indexToUpdate = allRows.findIndex((row) => row.id === newRow.id)
                 if (indexToUpdate >= 0) {
                     allRows[indexToUpdate] = { ...newRow }
@@ -244,14 +244,14 @@ const ToolDialog = ({ show, dialogProps, onUseTemplate, onCancel, onConfirm, set
                 delete toolData.id
                 delete toolData.createdDate
                 delete toolData.updatedDate
-                let dataStr = JSON.stringify(toolData, null, 2)
+                const dataStr = JSON.stringify(toolData, null, 2)
                 //let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr)
                 const blob = new Blob([dataStr], { type: 'application/json' })
                 const dataUri = URL.createObjectURL(blob)
 
-                let exportFileDefaultName = `${toolName}-CustomTool.json`
+                const exportFileDefaultName = `${toolName}-CustomTool.json`
 
-                let linkElement = document.createElement('a')
+                const linkElement = document.createElement('a')
                 linkElement.setAttribute('href', dataUri)
                 linkElement.setAttribute('download', exportFileDefaultName)
                 linkElement.click()

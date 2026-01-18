@@ -34,7 +34,7 @@ const ChatFeedback = ({ dialogProps, onConfirm }) => {
 
     const onSave = async () => {
         try {
-            let value = {
+            const value = {
                 chatFeedback: {
                     status: chatFeedbackStatus
                 }
@@ -80,7 +80,7 @@ const ChatFeedback = ({ dialogProps, onConfirm }) => {
 
     useEffect(() => {
         if (dialogProps.chatflow && dialogProps.chatflow.chatbotConfig) {
-            let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+            const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
             setChatbotConfig(chatbotConfig || {})
             if (chatbotConfig.chatFeedback) {
                 setChatFeedbackStatus(chatbotConfig.chatFeedback.status)

@@ -234,7 +234,7 @@ class Tool_Agentflow implements INode {
 
             // Remove escape characters (backslashes before special characters)
             // ex: \["a", "b", "c", "d", "e"\]
-            let cleanedValue = value
+            const cleanedValue = value
                 .replace(/\\"/g, '"') // \" -> "
                 .replace(/\\\\/g, '\\') // \\ -> \
                 .replace(/\\\[/g, '[') // \[ -> [

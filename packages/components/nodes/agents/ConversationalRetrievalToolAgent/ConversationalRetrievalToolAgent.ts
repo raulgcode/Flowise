@@ -223,7 +223,7 @@ class ConversationalRetrievalToolAgent_Agents implements INode {
             this.sessionId
         )
 
-        let finalRes = res?.output
+        const finalRes = res?.output
 
         if (sourceDocuments.length || usedTools.length) {
             const finalRes: ICommonObject = { text: output }
@@ -281,7 +281,7 @@ const prepareAgent = async (
             visionChatModel.setVisionModel()
 
             // Pop the `agent_scratchpad` MessagePlaceHolder
-            let messagePlaceholder = prompt.promptMessages.pop() as MessagesPlaceholder
+            const messagePlaceholder = prompt.promptMessages.pop() as MessagesPlaceholder
             if (prompt.promptMessages.at(-1) instanceof HumanMessagePromptTemplate) {
                 const lastMessage = prompt.promptMessages.pop() as HumanMessagePromptTemplate
                 const template = (lastMessage.prompt as PromptTemplate).template as string

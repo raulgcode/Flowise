@@ -70,7 +70,7 @@ export const DataGrid = ({ columns, rows, style, disabled = false, hideFooter = 
     const handleProcessRowUpdate = (newRow) => {
         let updatedRows = []
         setRowValues((prevRows) => {
-            let allRows = [...cloneDeep(prevRows)]
+            const allRows = [...cloneDeep(prevRows)]
             const indexToUpdate = allRows.findIndex((row) => row.id === newRow.id)
             if (indexToUpdate >= 0) {
                 allRows[indexToUpdate] = { ...newRow }
@@ -92,7 +92,7 @@ export const DataGrid = ({ columns, rows, style, disabled = false, hideFooter = 
 
     const addNewRow = () => {
         setRowValues((prevRows) => {
-            let allRows = [...cloneDeep(prevRows)]
+            const allRows = [...cloneDeep(prevRows)]
             const lastRowId = allRows.length ? allRows[allRows.length - 1].id + 1 : 1
             allRows.push({
                 ...getEmptyJsonObj(),

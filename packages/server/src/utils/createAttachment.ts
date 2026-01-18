@@ -74,7 +74,7 @@ export const createFileAttachment = async (req: Request) => {
     }
 
     // Parse chatbot configuration to get file upload settings
-    let pdfConfig = {
+    const pdfConfig = {
         usage: 'perPage',
         legacyBuild: false
     }

@@ -95,7 +95,7 @@ export class OxylabsLoader extends BaseDocumentLoader {
     }
 
     public async load(): Promise<DocumentInterface[]> {
-        let isUrlSource = this.params.source == 'universal'
+        const isUrlSource = this.params.source == 'universal'
 
         const params = {
             source: this.params.source,

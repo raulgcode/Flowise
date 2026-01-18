@@ -7,7 +7,7 @@ const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklm
 
 // Generate a copy of the users without their passwords.
 export const generateSafeCopy = (user: Partial<LoggedInUser>, deleteEmail?: boolean): any => {
-    let _user: any = { ...user }
+    const _user: any = { ...user }
     delete _user.credential
     delete _user.tempToken
     delete _user.tokenExpiry
@@ -52,11 +52,11 @@ export const decryptToken = (stringToDecrypt: string): string | undefined => {
             .update(process.env.TOKEN_HASH_SECRET || 'Secre$t')
             .digest()
 
-        let textParts = stringToDecrypt.split(':')
-        let iv = Buffer.from(textParts.shift() as string, 'hex')
-        let encryptedText = Buffer.from(textParts.join(':'), 'hex')
-        let decipher = crypto.createDecipheriv('aes-256-cbc', key, iv)
-        let decrypted = decipher.update(encryptedText)
+        const textParts = stringToDecrypt.split(':')
+        const iv = Buffer.from(textParts.shift() as string, 'hex')
+        const encryptedText = Buffer.from(textParts.join(':'), 'hex')
+        const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv)
+        const decrypted = decipher.update(encryptedText)
 
         const result = Buffer.concat([decrypted, decipher.final()])
 

@@ -245,7 +245,7 @@ class ToolAgent_Agents implements INode {
             this.sessionId
         )
 
-        let finalRes = output
+        const finalRes = output
 
         if (sourceDocuments.length || usedTools.length || artifacts.length) {
             const finalRes: ICommonObject = { text: output }
@@ -322,7 +322,7 @@ const prepareAgent = async (
             visionChatModel.setVisionModel()
 
             // Pop the `agent_scratchpad` MessagePlaceHolder
-            let messagePlaceholder = prompt.promptMessages.pop() as MessagesPlaceholder
+            const messagePlaceholder = prompt.promptMessages.pop() as MessagesPlaceholder
             if (prompt.promptMessages.at(-1) instanceof HumanMessagePromptTemplate) {
                 const lastMessage = prompt.promptMessages.pop() as HumanMessagePromptTemplate
                 const template = (lastMessage.prompt as PromptTemplate).template as string

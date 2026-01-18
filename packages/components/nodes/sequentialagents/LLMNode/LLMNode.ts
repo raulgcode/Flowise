@@ -613,7 +613,7 @@ async function agentNode(
             } else {
                 result.name = name
                 result.additional_kwargs = { ...result.additional_kwargs, nodeId: nodeData.id }
-                let outputContent = typeof result === 'string' ? result : result.content
+                const outputContent = typeof result === 'string' ? result : result.content
                 result.content = extractOutputFromArray(outputContent)
                 return {
                     ...returnedOutput,
@@ -635,7 +635,7 @@ async function agentNode(
             } else {
                 result.name = name
                 result.additional_kwargs = { ...result.additional_kwargs, nodeId: nodeData.id }
-                let outputContent = typeof result === 'string' ? result : result.content
+                const outputContent = typeof result === 'string' ? result : result.content
                 result.content = extractOutputFromArray(outputContent)
                 return {
                     messages: [result]

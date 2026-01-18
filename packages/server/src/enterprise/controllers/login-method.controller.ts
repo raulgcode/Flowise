@@ -47,9 +47,9 @@ export class LoginMethodController {
 
             const providers: string[] = []
 
-            let loginMethod = await loginMethodService.readLoginMethodByOrganizationId(organizationId, queryRunner)
+            const loginMethod = await loginMethodService.readLoginMethodByOrganizationId(organizationId, queryRunner)
             if (loginMethod) {
-                for (let method of loginMethod) {
+                for (const method of loginMethod) {
                     if (method.status === LoginMethodStatus.ENABLE) providers.push(method.name)
                 }
             }
@@ -86,7 +86,7 @@ export class LoginMethodController {
             } else if (query.organizationId) {
                 loginMethod = await loginMethodService.readLoginMethodByOrganizationId(query.organizationId, queryRunner)
 
-                for (let method of loginMethod) {
+                for (const method of loginMethod) {
                     method.config = JSON.parse(await decrypt(method.config))
                 }
                 loginMethodConfig.providers = loginMethod
@@ -106,7 +106,7 @@ export class LoginMethodController {
             const loginMethod = await loginMethodService.createOrUpdateConfig(req.body)
             if (loginMethod?.status === 'OK' && loginMethod?.organizationId) {
                 const appServer = getRunningExpressApp()
-                let providers: any[] = req.body.providers
+                const providers: any[] = req.body.providers
                 providers.map((provider: any) => {
                     const identityManager = appServer.identityManager
                     if (provider.config.clientID) {

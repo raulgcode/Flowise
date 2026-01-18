@@ -321,7 +321,7 @@ class Mem0MemoryExtended extends BaseMem0Memory implements MemoryMethods {
         })
         chatMessage = chatMessage.reverse()
 
-        let returnIMessages: IMessage[] = chatMessage.map((m) => ({
+        const returnIMessages: IMessage[] = chatMessage.map((m) => ({
             message: m.content as string,
             type: m.role as MessageType
         }))

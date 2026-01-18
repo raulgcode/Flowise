@@ -325,8 +325,8 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         }
         e.preventDefault()
         setIsDragActive(false)
-        let files = []
-        let uploadedFiles = []
+        const files = []
+        const uploadedFiles = []
 
         if (e.dataTransfer.files.length > 0) {
             for (const file of e.dataTransfer.files) {
@@ -375,7 +375,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
             for (const item of e.dataTransfer.items) {
                 if (item.kind === 'string' && item.type.match('^text/uri-list')) {
                     item.getAsString((s) => {
-                        let upload = {
+                        const upload = {
                             data: s,
                             preview: s,
                             type: 'url',
@@ -387,10 +387,10 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
                     item.getAsString((s) => {
                         if (s.indexOf('href') === -1) return
                         //extract href
-                        let start = s ? s.substring(s.indexOf('href') + 6) : ''
-                        let hrefStr = start.substring(0, start.indexOf('"'))
+                        const start = s ? s.substring(s.indexOf('href') + 6) : ''
+                        const hrefStr = start.substring(0, start.indexOf('"'))
 
-                        let upload = {
+                        const upload = {
                             data: hrefStr,
                             preview: hrefStr,
                             type: 'url',
@@ -408,8 +408,8 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         if (!fileObj) {
             return
         }
-        let files = []
-        let uploadedFiles = []
+        const files = []
+        const uploadedFiles = []
         for (const file of event.target.files) {
             if (isFileAllowedForUpload(file) === false) {
                 return
@@ -584,7 +584,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessage = (text) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].message += text
             allMessages[allMessages.length - 1].feedback = null
@@ -594,7 +594,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateErrorMessage = (errorMessage) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             allMessages.push({ message: errorMessage, type: 'apiMessage' })
             return allMessages
         })
@@ -602,7 +602,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageSourceDocuments = (sourceDocuments) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].sourceDocuments = sourceDocuments
             return allMessages
@@ -611,7 +611,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageAgentReasoning = (agentReasoning) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].agentReasoning = agentReasoning
             return allMessages
@@ -623,7 +623,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
             setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage', agentFlowEventStatus: event }])
         } else {
             setMessages((prevMessages) => {
-                let allMessages = [...cloneDeep(prevMessages)]
+                const allMessages = [...cloneDeep(prevMessages)]
                 if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
                 allMessages[allMessages.length - 1].agentFlowEventStatus = event
                 return allMessages
@@ -633,7 +633,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateAgentFlowExecutedData = (agentFlowExecutedData) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].agentFlowExecutedData = agentFlowExecutedData
             return allMessages
@@ -642,7 +642,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageAction = (action) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].action = action
             return allMessages
@@ -659,7 +659,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
             }
         })
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].artifacts = artifacts
             return allMessages
@@ -668,7 +668,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageNextAgent = (nextAgent) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             const lastAgentReasoning = allMessages[allMessages.length - 1].agentReasoning
             if (lastAgentReasoning && lastAgentReasoning.length > 0) {
@@ -685,7 +685,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageUsedTools = (usedTools) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
 
             // When usedTools are received, check if there are matching calledTools to replace
@@ -712,7 +712,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageCalledTools = (calledTools) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].calledTools = calledTools
             return allMessages
@@ -721,7 +721,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const cleanupCalledTools = () => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
 
             // Remove any remaining calledTools when the stream ends
@@ -740,7 +740,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
     const updateLastMessageFileAnnotations = (fileAnnotations) => {
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].fileAnnotations = fileAnnotations
             return allMessages
@@ -750,7 +750,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
     const abortMessage = () => {
         setIsMessageStopping(false)
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             const lastAgentReasoning = allMessages[allMessages.length - 1].agentReasoning
             if (lastAgentReasoning && lastAgentReasoning.length > 0) {
@@ -824,7 +824,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
     const handleActionClick = async (elem, action) => {
         setUserInput(elem.label)
         setMessages((prevMessages) => {
-            let allMessages = [...cloneDeep(prevMessages)]
+            const allMessages = [...cloneDeep(prevMessages)]
             if (allMessages[allMessages.length - 1].type === 'userMessage') return allMessages
             allMessages[allMessages.length - 1].action = null
             return allMessages
@@ -848,7 +848,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         // set message id that is needed for feedback
         if (data.chatMessageId) {
             setMessages((prevMessages) => {
-                let allMessages = [...cloneDeep(prevMessages)]
+                const allMessages = [...cloneDeep(prevMessages)]
                 if (allMessages[allMessages.length - 1].type === 'apiMessage') {
                     allMessages[allMessages.length - 1].id = data.chatMessageId
                 }
@@ -864,7 +864,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
             // the response contains the question even if it was in an audio format
             // so if input is empty but the response contains the question, update the user message to show the question
             setMessages((prevMessages) => {
-                let allMessages = [...cloneDeep(prevMessages)]
+                const allMessages = [...cloneDeep(prevMessages)]
                 if (allMessages[allMessages.length - 2].type === 'apiMessage') return allMessages
                 allMessages[allMessages.length - 2].message = data.question
                 return allMessages
@@ -1333,7 +1333,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         if (getChatflowConfig.data) {
             setIsConfigLoading(false)
             if (getChatflowConfig.data?.flowData) {
-                let nodes = JSON.parse(getChatflowConfig.data?.flowData).nodes ?? []
+                const nodes = JSON.parse(getChatflowConfig.data?.flowData).nodes ?? []
                 const startNode = nodes.find((node) => node.data.name === 'startAgentflow')
                 if (startNode) {
                     const startInputType = startNode.data.inputs?.startInputType
@@ -1364,9 +1364,9 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
             }
 
             if (getChatflowConfig.data?.chatbotConfig && JSON.parse(getChatflowConfig.data?.chatbotConfig)) {
-                let config = JSON.parse(getChatflowConfig.data?.chatbotConfig)
+                const config = JSON.parse(getChatflowConfig.data?.chatbotConfig)
                 if (config.starterPrompts) {
-                    let inputFields = []
+                    const inputFields = []
                     Object.getOwnPropertyNames(config.starterPrompts).forEach((key) => {
                         if (config.starterPrompts[key]) {
                             inputFields.push(config.starterPrompts[key])
@@ -1627,7 +1627,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
             setIsLeadSaved(true)
             setLeadEmail(leadEmail)
             setMessages((prevMessages) => {
-                let allMessages = [...cloneDeep(prevMessages)]
+                const allMessages = [...cloneDeep(prevMessages)]
                 if (allMessages[allMessages.length - 1].type !== 'leadCaptureMessage') return allMessages
                 allMessages[allMessages.length - 1].message =
                     leadsConfig.successMessage || 'Thank you for submitting your contact information.'

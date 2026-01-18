@@ -176,7 +176,7 @@ export class IdentityManager {
                 }
                 const loginMethods = await loginMethodService.readLoginMethodByOrganizationId(organizationId, queryRunner)
                 if (loginMethods && loginMethods.length > 0) {
-                    for (let method of loginMethods) {
+                    for (const method of loginMethods) {
                         if (method.status === LoginMethodStatus.ENABLE) {
                             method.config = JSON.parse(await loginMethodService.decryptLoginMethodConfig(method.config))
                             this.initializeSsoProvider(app, method.name, method.config)

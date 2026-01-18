@@ -895,7 +895,7 @@ export const addImageArtifactsToMessages = async (messages: BaseMessageLike[], o
  * Updates the flow state with new values
  */
 export const updateFlowState = (state: ICommonObject, updateState: IFlowState[]): ICommonObject => {
-    let newFlowState: Record<string, any> = {}
+    const newFlowState: Record<string, any> = {}
     for (const state of updateState) {
         newFlowState[state.key] = state.value
     }

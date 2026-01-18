@@ -298,7 +298,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
                     '[ "chatflows:view", "chatflows:create", "chatflows:update", "chatflows:duplicate", "chatflows:delete", "chatflows:export", "chatflows:import", "chatflows:config", "chatflows:domains", "agentflows:view", "agentflows:create", "agentflows:update", "agentflows:duplicate", "agentflows:delete", "agentflows:export", "agentflows:import", "agentflows:config", "agentflows:domains", "tools:view", "tools:create", "tools:update", "tools:delete", "tools:export", "assistants:view", "assistants:create", "assistants:update", "assistants:delete", "credentials:view", "credentials:create", "credentials:update", "credentials:delete", "credentials:share", "variables:view", "variables:create", "variables:update", "variables:delete", "apikeys:view", "apikeys:create", "apikeys:update", "apikeys:delete", "apikeys:import", "documentStores:view", "documentStores:create", "documentStores:update", "documentStores:delete", "documentStores:add-loader", "documentStores:delete-loader", "documentStores:preview-process", "documentStores:upsert-config", "datasets:view", "datasets:create", "datasets:update", "datasets:delete", "evaluators:view", "evaluators:create", "evaluators:update", "evaluators:delete", "evaluations:view", "evaluations:create", "evaluations:update", "evaluations:delete", "evaluations:run", "templates:marketplace", "templates:custom", "templates:custom-delete", "templates:toolexport", "templates:flowexport", "templates:custom-share", "workspace:export", "workspace:import", "executions:view", "executions:delete" ]'
             }
         ]
-        for (let role of generalRole) {
+        for (const role of generalRole) {
             await queryRunner.query(`
                     insert into \`role\`(\`name\`, \`description\`, \`permissions\`)
                     values('${role.name}', '${role.description}', '${role.permissions}');
@@ -346,7 +346,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         ----------- login method --------------
         --------------------------------------*/
         // insert login_method with temp_organization data
-        for (let config of ssoConfig) {
+        for (const config of ssoConfig) {
             const newConfigFormat = {
                 domain: config.domain === '' || config.domain === undefined ? undefined : config.domain,
                 tenantID: config.tenantID === '' || config.tenantID === undefined ? undefined : config.tenantID,
@@ -370,7 +370,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         --------------------------------------*/
         // insert workspace role  into role
         const workspaceRole = await queryRunner.query(`select \`id\`, \`name\`, \`description\`, \`permissions\` from \`temp_role\`;`)
-        for (let role of workspaceRole) {
+        for (const role of workspaceRole) {
             role.permissions = JSON.stringify(role.permissions.split(',').filter((permission: string) => permission.trim() !== ''))
             const haveDescriptionQuery = `insert into \`role\` (\`id\`, \`organizationId\`, \`name\`, \`description\`, \`permissions\`, \`createdBy\`, \`updatedBy\`)
                 values('${role.id}','${organizationId}','${role.name}','${role.description}','${role.permissions}','${adminUserId}','${adminUserId}');`
@@ -385,7 +385,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         --------------------------------------*/
         const roles = await queryRunner.query('select * from `role`;')
         // insert organization_user with user, role and temp_organization data
-        for (let user of users) {
+        for (const user of users) {
             const roleId =
                 user.id === adminUserId
                     ? roles.find((role: any) => role.name === GeneralRole.OWNER).id
@@ -400,7 +400,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         ------------- workspace ---------------
         --------------------------------------*/
         const workspaces = await queryRunner.query('select * from `workspace`;')
-        for (let workspace of workspaces) {
+        for (const workspace of workspaces) {
             await queryRunner.query(
                 `update \`workspace\` set \`createdBy\` = '${adminUserId}', \`updatedBy\` = '${adminUserId}' where \`id\` = '${workspace.id}';`
             )
@@ -410,7 +410,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         ----------- workspace_user ------------
         --------------------------------------*/
         const workspaceUsers = await queryRunner.query('select * from `temp_workspace_user`;')
-        for (let workspaceUser of workspaceUsers) {
+        for (const workspaceUser of workspaceUsers) {
             switch (workspaceUser.role) {
                 case 'org_admin':
                     workspaceUser.role = roles.find((role: any) => role.name === GeneralRole.OWNER).id

@@ -155,7 +155,7 @@ const createEvaluation = async (body: ICommonObject, baseURL: string, orgId: str
             if (!credential) throw new Error(`Credential ${body.credentialId} not found`)
         }
 
-        let evalMetrics = { passCount: 0, failCount: 0, errorCount: 0 }
+        const evalMetrics = { passCount: 0, failCount: 0, errorCount: 0 }
         evalRunner
             .runEvaluations(data)
             .then(async (result) => {
@@ -175,7 +175,7 @@ const createEvaluation = async (body: ICommonObject, baseURL: string, orgId: str
                             }
                             actualOutputArray.push(evaluationRow.actualOutput)
                             totalTime += parseFloat(evaluationRow.latency)
-                            let metricsObjFromRun: ICommonObject = {}
+                            const metricsObjFromRun: ICommonObject = {}
 
                             let nested_metrics = evaluationRow.nested_metrics
 

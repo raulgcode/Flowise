@@ -43,7 +43,7 @@ const Leads = ({ dialogProps }) => {
 
     const onSave = async () => {
         try {
-            let value = {
+            const value = {
                 leads: leadsConfig
             }
             chatbotConfig.leads = value.leads
@@ -85,7 +85,7 @@ const Leads = ({ dialogProps }) => {
 
     useEffect(() => {
         if (dialogProps.chatflow && dialogProps.chatflow.chatbotConfig) {
-            let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+            const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
             setChatbotConfig(chatbotConfig || {})
             if (chatbotConfig.leads) {
                 setLeadsConfig(chatbotConfig.leads)

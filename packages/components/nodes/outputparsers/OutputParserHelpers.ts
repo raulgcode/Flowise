@@ -21,11 +21,11 @@ export const injectOutputParser = (
     if (outputParser && chain.prompt) {
         const formatInstructions = outputParser.getFormatInstructions()
         if (chain.prompt instanceof PromptTemplate) {
-            let pt = chain.prompt
+            const pt = chain.prompt
             pt.template = pt.template + '\n{format_instructions}'
             chain.prompt.partialVariables = { format_instructions: formatInstructions }
         } else if (chain.prompt instanceof ChatPromptTemplate) {
-            let pt = chain.prompt
+            const pt = chain.prompt
             pt.promptMessages.forEach((msg) => {
                 if (msg instanceof SystemMessagePromptTemplate) {
                     ;(msg.prompt as any).partialVariables = { format_instructions: outputParser.getFormatInstructions() }

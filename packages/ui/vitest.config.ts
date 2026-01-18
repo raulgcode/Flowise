@@ -4,6 +4,7 @@ import { resolve } from 'path'
 import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig({
+    // @ts-expect-error - vite version mismatch between @vitejs/plugin-react and vitest
     plugins: [react()],
     resolve: {
         alias: {

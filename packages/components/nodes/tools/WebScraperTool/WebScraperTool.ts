@@ -108,7 +108,7 @@ class WebScraperRecursiveTool extends Tool {
             const html = await response.text()
             const $ = cheerio.load(html)
             const title = $('title').first().text() || 'No title found'
-            let description =
+            const description =
                 $('meta[name="description"]').attr('content') ||
                 $('meta[property="og:description"]').attr('content') ||
                 $('meta[name="twitter:description"]').attr('content') ||

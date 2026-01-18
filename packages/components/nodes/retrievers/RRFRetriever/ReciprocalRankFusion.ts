@@ -64,7 +64,7 @@ export class ReciprocalRankFusion extends BaseDocumentCompressor {
     reciprocalRankFunction(docList: Document<Record<string, any>>[][], k: number): Document<Record<string, any>>[] {
         docList.forEach((docs: Document<Record<string, any>>[]) => {
             docs.forEach((doc: any, index: number) => {
-                let rank = index + 1
+                const rank = index + 1
                 if (doc.metadata.relevancy_score) {
                     doc.metadata.relevancy_score += 1 / (rank + k)
                 } else {

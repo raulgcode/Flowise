@@ -135,7 +135,7 @@ class Custom_MCP implements INode {
             throw new Error('MCP Server Config is required')
         }
 
-        let sandbox: ICommonObject = {}
+        const sandbox: ICommonObject = {}
         const workspaceId = options?.searchOptions?.workspaceId?._value || options?.workspaceId
 
         if (mcpServerConfig.includes('$vars')) {

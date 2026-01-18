@@ -37,7 +37,7 @@ const fetchList = async ({ name, nodeData, previousNodes, currentNode }) => {
         credentialId = nodeData.inputs.credential || nodeData.inputs?.['FLOWISE_CREDENTIAL_ID']
     }
 
-    let config = {
+    const config = {
         headers: {
             'x-request-from': 'internal',
             'Content-type': 'application/json'
@@ -45,7 +45,7 @@ const fetchList = async ({ name, nodeData, previousNodes, currentNode }) => {
         withCredentials: true
     }
 
-    let lists = await axios
+    const lists = await axios
         .post(
             `${baseURL}/api/v1/node-load-method/${nodeData.name}`,
             { ...nodeData, loadMethod, previousNodes, currentNode, credential: credentialId },
@@ -94,7 +94,7 @@ export const AsyncDropdown = ({
     }
     const getDefaultOptionValue = () => (multiple ? [] : '')
     const addNewOption = [{ label: '- Create New -', name: '-create-' }]
-    let [internalValue, setInternalValue] = useState(value ?? 'choose an option')
+    const [internalValue, setInternalValue] = useState(value ?? 'choose an option')
     const { reactFlowInstance } = useContext(flowContext)
 
     const fetchCredentialList = async () => {

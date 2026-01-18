@@ -210,7 +210,7 @@ router.get('/callback', async (req: Request, res: Response) => {
             return res.status(400).send(errorHtml)
         }
 
-        let tokenUrl = accessTokenUrl
+        const tokenUrl = accessTokenUrl
         if (!tokenUrl) {
             const errorHtml = generateErrorPage(
                 'Missing token endpoint URL',
@@ -333,7 +333,7 @@ router.post('/refresh/:credentialId', async (req: Request, res: Response, next: 
             })
         }
 
-        let tokenUrl = accessTokenUrl
+        const tokenUrl = accessTokenUrl
         if (!tokenUrl) {
             return res.status(400).json({
                 success: false,

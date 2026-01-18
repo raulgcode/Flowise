@@ -187,25 +187,25 @@ class StripeTool_Tools implements INode {
         const stripeApiToken = getCredentialParam('stripeApiToken', credentialData, nodeData)
 
         const _paymentLinks = nodeData.inputs?.paymentLinks as string
-        let paymentLinks: string[] = convertMultiOptionsToStringArray(_paymentLinks)
+        const paymentLinks: string[] = convertMultiOptionsToStringArray(_paymentLinks)
 
         const _products = nodeData.inputs?.products as string
-        let products: string[] = convertMultiOptionsToStringArray(_products)
+        const products: string[] = convertMultiOptionsToStringArray(_products)
 
         const _prices = nodeData.inputs?.prices as string
-        let prices: string[] = convertMultiOptionsToStringArray(_prices)
+        const prices: string[] = convertMultiOptionsToStringArray(_prices)
 
         const _balance = nodeData.inputs?.balance as string
-        let balance: string[] = convertMultiOptionsToStringArray(_balance)
+        const balance: string[] = convertMultiOptionsToStringArray(_balance)
 
         const _invoiceItems = nodeData.inputs?.invoiceItems as string
-        let invoiceItems: string[] = convertMultiOptionsToStringArray(_invoiceItems)
+        const invoiceItems: string[] = convertMultiOptionsToStringArray(_invoiceItems)
 
         const _invoices = nodeData.inputs?.invoices as string
-        let invoices: string[] = convertMultiOptionsToStringArray(_invoices)
+        const invoices: string[] = convertMultiOptionsToStringArray(_invoices)
 
         const _customers = nodeData.inputs?.customers as string
-        let customers: string[] = convertMultiOptionsToStringArray(_customers)
+        const customers: string[] = convertMultiOptionsToStringArray(_customers)
 
         const actionObj: any = {}
         if (paymentLinks.length > 0) {

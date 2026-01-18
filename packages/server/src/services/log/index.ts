@@ -8,7 +8,7 @@ import readline from 'readline'
 const readFile = (filePath: string) => {
     return new Promise(function (resolve, reject) {
         const lines: string[] = []
-        var rl = readline.createInterface({
+        const rl = readline.createInterface({
             input: fs.createReadStream(filePath)
         })
 
@@ -65,7 +65,7 @@ const getLogs = async (startDate?: string, endDate?: string) => {
     }
 
     try {
-        var promises = []
+        const promises = []
         const files = generateDateRange(startDate, endDate)
 
         for (let i = 0; i < files.length; i++) {

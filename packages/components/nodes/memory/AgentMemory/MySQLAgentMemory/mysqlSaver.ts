@@ -245,7 +245,7 @@ export class MySQLSaver extends BaseCheckpointSaver implements MemoryMethods {
             return await mapChatMessageToBaseMessage(chatMessage, this.config.orgId)
         }
 
-        let returnIMessages: IMessage[] = []
+        const returnIMessages: IMessage[] = []
         for (const m of chatMessage) {
             returnIMessages.push({
                 message: m.content as string,

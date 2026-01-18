@@ -105,7 +105,7 @@ const AddEditEvaluatorDialog = ({ show, dialogProps, onCancel, onConfirm }) => {
     const addNewRow = () => {
         setTimeout(() => {
             setOutputSchema((prevRows) => {
-                let allRows = [...cloneDeep(prevRows)]
+                const allRows = [...cloneDeep(prevRows)]
                 const lastRowId = allRows.length ? allRows[allRows.length - 1].id + 1 : 1
                 allRows.push({
                     id: lastRowId,
@@ -122,7 +122,7 @@ const AddEditEvaluatorDialog = ({ show, dialogProps, onCancel, onConfirm }) => {
     const onRowUpdate = (newRow) => {
         setTimeout(() => {
             setOutputSchema((prevRows) => {
-                let allRows = [...cloneDeep(prevRows)]
+                const allRows = [...cloneDeep(prevRows)]
                 const indexToUpdate = allRows.findIndex((row) => row.id === newRow.id)
                 if (indexToUpdate >= 0) {
                     allRows[indexToUpdate] = { ...newRow }

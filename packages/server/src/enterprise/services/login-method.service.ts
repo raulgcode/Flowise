@@ -101,9 +101,9 @@ export class LoginMethodService {
     }
 
     public async createOrUpdateConfig(body: any) {
-        let organizationId: string = body.organizationId
-        let providers: any[] = body.providers
-        let userId: string = body.userId
+        const organizationId: string = body.organizationId
+        const providers: any[] = body.providers
+        const userId: string = body.userId
 
         let queryRunner
         try {
@@ -115,7 +115,7 @@ export class LoginMethodService {
             const organization = await this.organizationService.readOrganizationById(organizationId, queryRunner)
             if (!organization) throw new InternalFlowiseError(StatusCodes.NOT_FOUND, OrganizationErrorMessage.ORGANIZATION_NOT_FOUND)
 
-            for (let provider of providers) {
+            for (const provider of providers) {
                 this.validateLoginMethodName(provider.providerName)
                 this.validateLoginMethodStatus(provider.status)
 
@@ -129,7 +129,7 @@ export class LoginMethodService {
                     await this.saveLoginMethod(loginMethod, queryRunner)
                 } else {
                     const encryptedConfig = await this.encryptLoginMethodConfig(JSON.stringify(provider.config))
-                    let newLoginMethod = queryRunner.manager.create(LoginMethod, {
+                    const newLoginMethod = queryRunner.manager.create(LoginMethod, {
                         organizationId,
                         name,
                         status: provider.status,

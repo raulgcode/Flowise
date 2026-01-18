@@ -263,7 +263,7 @@ const prepareConnectionOptions = (
 ) => {
     let elasticSearchClientOptions: ClientOptions = {}
     if (endPoint) {
-        let apiKey = getCredentialParam('apiKey', credentialData, nodeData)
+        const apiKey = getCredentialParam('apiKey', credentialData, nodeData)
         elasticSearchClientOptions = {
             node: endPoint,
             auth: {
@@ -271,8 +271,8 @@ const prepareConnectionOptions = (
             }
         }
     } else if (cloudId) {
-        let username = getCredentialParam('username', credentialData, nodeData)
-        let password = getCredentialParam('password', credentialData, nodeData)
+        const username = getCredentialParam('username', credentialData, nodeData)
+        const password = getCredentialParam('password', credentialData, nodeData)
         if (cloudId.startsWith('http')) {
             elasticSearchClientOptions = {
                 node: cloudId,
@@ -307,7 +307,7 @@ const prepareClientArgs = (
     similarityMeasure: string,
     indexName: string
 ) => {
-    let elasticSearchClientOptions = prepareConnectionOptions(endPoint, cloudId, credentialData, nodeData)
+    const elasticSearchClientOptions = prepareConnectionOptions(endPoint, cloudId, credentialData, nodeData)
     let vectorSearchOptions = {}
     switch (similarityMeasure) {
         case 'dot_product':

@@ -226,7 +226,7 @@ export const resolveVariables = async (
     iterationContext?: ICommonObject,
     loopCounts?: Map<string, number>
 ): Promise<INodeData> => {
-    let flowNodeData = cloneDeep(reactFlowNodeData)
+    const flowNodeData = cloneDeep(reactFlowNodeData)
     const types = 'inputs'
 
     const resolveNodeReference = async (value: any): Promise<any> => {
@@ -1189,7 +1189,7 @@ const executeNode = async ({
         }
 
         // Execute node
-        let results = await newNodeInstance.run(reactFlowNodeData, finalInput, runParams)
+        const results = await newNodeInstance.run(reactFlowNodeData, finalInput, runParams)
 
         // Handle iteration node with recursive execution
         if (
@@ -1500,7 +1500,7 @@ export const executeAgentFlow = async ({
 
     const question = incomingInput.question
     const form = incomingInput.form
-    let overrideConfig = incomingInput.overrideConfig ?? {}
+    const overrideConfig = incomingInput.overrideConfig ?? {}
     const uploads = incomingInput.uploads
     const userMessageDateTime = new Date()
     const chatflowid = chatflow.id
@@ -1569,7 +1569,7 @@ export const executeAgentFlow = async ({
     const loopCounts: Map<string, number> = new Map()
 
     // Initialize runtime state for new execution
-    let agentflowRuntime: IAgentFlowRuntime = {
+    const agentflowRuntime: IAgentFlowRuntime = {
         state: {},
         chatHistory: [],
         form: {}
@@ -2197,7 +2197,7 @@ export const executeAgentFlow = async ({
 
     // Find the previous chat message with the same session/chat id and remove the action
     if (humanInput && Object.keys(humanInput).length) {
-        let query = await appDataSource
+        const query = await appDataSource
             .getRepository(ChatMessage)
             .createQueryBuilder('chat_message')
             .where('chat_message.chatId = :chatId', { chatId })
@@ -2299,7 +2299,7 @@ export const executeAgentFlow = async ({
     )
 
     /*** Prepare response ***/
-    let result: ICommonObject = {}
+    const result: ICommonObject = {}
     result.text = content
     result.question = incomingInput.question // return the question in the response, this is used when input text is empty but question is in audio format
     result.form = form

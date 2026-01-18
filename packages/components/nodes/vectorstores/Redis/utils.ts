@@ -16,7 +16,7 @@ export const escapeAllStrings = (obj: object) => {
     }
     Object.keys(obj).forEach((key: string) => {
         // @ts-ignore
-        let item = obj[key]
+        const item = obj[key]
         if (typeof item === 'object') {
             escapeAllStrings(item)
         } else if (typeof item === 'string') {

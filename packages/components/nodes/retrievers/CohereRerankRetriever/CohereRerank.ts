@@ -41,7 +41,7 @@ export class CohereRerank extends BaseDocumentCompressor {
             documents: documents.map((doc) => doc.pageContent)
         }
         try {
-            let returnedDocs = await axios.post(this.COHERE_API_URL, data, config)
+            const returnedDocs = await axios.post(this.COHERE_API_URL, data, config)
             const finalResults: Document<Record<string, any>>[] = []
             returnedDocs.data.results.forEach((result: any) => {
                 const doc = documents[result.index]

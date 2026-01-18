@@ -92,12 +92,12 @@ abstract class SSOBase {
                     const newAccount = await accountService.register(data)
                     user = newAccount.user
                 }
-                let wsUserOrUsers = await workspaceUserService.readWorkspaceUserByLastLogin(user?.id, queryRunner)
+                const wsUserOrUsers = await workspaceUserService.readWorkspaceUserByLastLogin(user?.id, queryRunner)
                 wu = Array.isArray(wsUserOrUsers) && wsUserOrUsers.length > 0 ? wsUserOrUsers[0] : (wsUserOrUsers as WorkspaceUser)
             }
 
             const workspaceUser = wu as WorkspaceUser
-            let roleService = new RoleService()
+            const roleService = new RoleService()
             const ownerRole = await roleService.readGeneralRoleByName(GeneralRole.OWNER, queryRunner)
             const role = await roleService.readRoleById(workspaceUser.roleId, queryRunner)
             if (!role) throw new InternalFlowiseError(StatusCodes.NOT_FOUND, RoleErrorMessage.ROLE_NOT_FOUND)

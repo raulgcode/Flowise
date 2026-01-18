@@ -104,7 +104,7 @@ export class OrganizationService {
         }
         newOrganizationData.createdBy = oldOrganizationData.createdBy
 
-        let updateOrganization = queryRunner.manager.merge(Organization, oldOrganizationData, newOrganizationData)
+        const updateOrganization = queryRunner.manager.merge(Organization, oldOrganizationData, newOrganizationData)
         try {
             await queryRunner.startTransaction()
             await this.saveOrganization(updateOrganization, queryRunner)

@@ -261,7 +261,7 @@ class OpenAIAssistant_Agents implements INode {
                 filteredTools = filteredTools.filter((tool) => !(tool.type === 'function' && !(tool as any).function))
                 await openai.beta.assistants.update(openAIAssistantId, { tools: filteredTools })
             } else {
-                let filteredTools = retrievedAssistant.tools.filter((tool) => tool.type !== 'function')
+                const filteredTools = retrievedAssistant.tools.filter((tool) => tool.type !== 'function')
                 await openai.beta.assistants.update(openAIAssistantId, { tools: filteredTools })
             }
 

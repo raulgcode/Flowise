@@ -21,7 +21,7 @@ export const ArrayRenderer = ({ inputParam, data, disabled, isDocStore = false }
     // Handler for when input values change within array items
     const handleItemInputChange = ({ inputParam: changedParam, newValue }, itemIndex) => {
         // Create deep copy to avoid mutating state directly
-        let clonedData = cloneDeep(data)
+        const clonedData = cloneDeep(data)
 
         // Update the specific array item that changed
         const updatedArrayItems = [...arrayItems]
@@ -132,7 +132,7 @@ export const ArrayRenderer = ({ inputParam, data, disabled, isDocStore = false }
     // Handler for adding new array items
     const handleAddItem = () => {
         // Initialize new item with default values
-        let newItem = {}
+        const newItem = {}
 
         for (const fieldDef of inputParam.array) {
             newItem[fieldDef.name] = fieldDef.default || ''

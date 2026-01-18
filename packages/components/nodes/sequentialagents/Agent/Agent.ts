@@ -803,7 +803,7 @@ async function agentNode(
 
             // If the last message is a tool message and is an interrupted message, format output into standard agent output
             if (lastMessage && lastMessage._getType() === 'tool' && lastMessage.additional_kwargs?.nodeId === nodeData.id) {
-                let formattedAgentResult: {
+                const formattedAgentResult: {
                     output?: string
                     usedTools?: IUsedTool[]
                     sourceDocuments?: IDocument[]
@@ -850,7 +850,7 @@ async function agentNode(
         outputContent = removeInvalidImageMarkdown(outputContent)
 
         if (nodeData.inputs?.updateStateMemoryUI || nodeData.inputs?.updateStateMemoryCode) {
-            let formattedOutput = {
+            const formattedOutput = {
                 ...result,
                 content: outputContent
             }

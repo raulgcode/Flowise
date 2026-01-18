@@ -6,7 +6,7 @@ import { getErrorMessage } from '../../errors/utils'
 
 const createPrompt = async (promptName: string): Promise<any> => {
     try {
-        let hub = new Client()
+        const hub = new Client()
         const prompt = await hub.pull(promptName)
         const templates = parsePrompt(prompt)
         const dbResponse = {

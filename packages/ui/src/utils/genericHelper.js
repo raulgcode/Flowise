@@ -163,7 +163,7 @@ export const initNode = (nodeData, newNodeId, isAgentflow) => {
     }
 
     // Outputs
-    let outputAnchors = initializeOutputAnchors(nodeData, newNodeId, isAgentflow)
+    const outputAnchors = initializeOutputAnchors(nodeData, newNodeId, isAgentflow)
 
     /* Initial
     inputs = [
@@ -306,7 +306,7 @@ export const updateOutdatedNodeData = (newComponentNodeData, existingComponentNo
 
     for (const inputParam of inputParamsWithTabIdentifiers) {
         const tabIdentifier = `${inputParam.tabIdentifier}_${existingComponentNodeData.id}`
-        let selectedTabValue = existingComponentNodeData.inputs[tabIdentifier] || inputParam.default
+        const selectedTabValue = existingComponentNodeData.inputs[tabIdentifier] || inputParam.default
         initNewComponentNodeData.inputs[tabIdentifier] = selectedTabValue
         initNewComponentNodeData.inputs[selectedTabValue] = existingComponentNodeData.inputs[selectedTabValue]
     }
@@ -425,7 +425,7 @@ export const isValidConnection = (connection, reactFlowInstance) => {
     targetTypes = targetTypes.map((t) => t.trim())
 
     if (targetTypes.some((t) => sourceTypes.includes(t))) {
-        let targetNode = reactFlowInstance.getNode(target)
+        const targetNode = reactFlowInstance.getNode(target)
 
         if (!targetNode) {
             if (!reactFlowInstance.getEdges().find((e) => e.targetHandle === targetHandle)) {
@@ -516,7 +516,7 @@ export const convertDateStringToDateObject = (dateString) => {
 }
 
 export const getFileName = (fileBase64) => {
-    let fileNames = []
+    const fileNames = []
     if (fileBase64.startsWith('FILE-STORAGE::')) {
         const names = fileBase64.substring(14)
         if (names.includes('[') && names.includes(']')) {
@@ -1168,7 +1168,7 @@ export const getCustomConditionOutputs = (value, nodeId, existingEdges, isDataGr
     outputAnchors.push(newOutput)
 
     // Remove edges
-    let newEdgeSourceHandles = []
+    const newEdgeSourceHandles = []
     for (const anchor of options) {
         const anchorId = anchor.id
         newEdgeSourceHandles.push(anchorId)

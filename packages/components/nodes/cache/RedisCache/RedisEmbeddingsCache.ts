@@ -99,7 +99,7 @@ class RedisEmbeddingsCache implements INode {
         }
 
         ttl ??= '3600'
-        let ttlNumber = parseInt(ttl, 10)
+        const ttlNumber = parseInt(ttl, 10)
         const redisStore = new RedisByteStore({
             client: client,
             ttl: ttlNumber

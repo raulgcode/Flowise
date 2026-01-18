@@ -321,7 +321,7 @@ const CreateEvaluationDialog = ({ show, dialogProps, onCancel, onConfirm }) => {
         if (getAllDatasetsApi.data) {
             try {
                 const datasets = getAllDatasetsApi.data
-                let dsNames = []
+                const dsNames = []
                 for (let i = 0; i < datasets.length; i += 1) {
                     const ds = datasets[i]
                     dsNames.push({
@@ -356,7 +356,7 @@ const CreateEvaluationDialog = ({ show, dialogProps, onCancel, onConfirm }) => {
     }
 
     const populateFlowNames = (data, type) => {
-        let flowNames = []
+        const flowNames = []
         for (let i = 0; i < data.length; i += 1) {
             const flow = data[i]
             flowNames.push({
@@ -370,7 +370,7 @@ const CreateEvaluationDialog = ({ show, dialogProps, onCancel, onConfirm }) => {
     }
 
     const populateAssistants = (assistants) => {
-        let assistantNames = []
+        const assistantNames = []
         for (let i = 0; i < assistants.length; i += 1) {
             const assistant = assistants[i]
             assistantNames.push({

@@ -30,7 +30,7 @@ const getAllTemplates = async () => {
     try {
         let marketplaceDir = path.join(__dirname, '..', '..', '..', 'marketplaces', 'chatflows')
         let jsonsInDir = fs.readdirSync(marketplaceDir).filter((file) => path.extname(file) === '.json')
-        let templates: any[] = []
+        const templates: any[] = []
         jsonsInDir.forEach((file) => {
             const filePath = path.join(__dirname, '..', '..', '..', 'marketplaces', 'chatflows', file)
             const fileData = fs.readFileSync(filePath)
@@ -206,7 +206,7 @@ const saveCustomTemplate = async (body: any): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
         let flowDataStr = ''
-        let derivedFramework = ''
+        const derivedFramework = ''
         const customTemplate = new CustomTemplate()
         Object.assign(customTemplate, body)
 

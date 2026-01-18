@@ -37,7 +37,7 @@ export class VoyageAIRerank extends BaseDocumentCompressor {
             documents: documents.map((doc) => doc.pageContent)
         }
         try {
-            let returnedDocs = await axios.post(this.VOYAGEAI_RERANK_API_URL, data, config)
+            const returnedDocs = await axios.post(this.VOYAGEAI_RERANK_API_URL, data, config)
             const finalResults: Document<Record<string, any>>[] = []
             returnedDocs.data.results.forEach((result: any) => {
                 const doc = documents[result.index]

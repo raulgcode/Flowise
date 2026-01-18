@@ -35,7 +35,7 @@ export class LoadOfSheet extends BufferLoader {
         ]
 
         const wb = read(raw, { type: 'buffer' })
-        for (let name of wb.SheetNames) {
+        for (const name of wb.SheetNames) {
             const fields: Record<string, Record<string, boolean>> = {}
             const ws = wb.Sheets[name]
             if (!ws) continue

@@ -179,7 +179,7 @@ class Start_Agentflow implements INode {
             }
         }
 
-        let flowState: Record<string, any> = {}
+        const flowState: Record<string, any> = {}
         for (const state of flowStateArray) {
             flowState[state.key] = state.value
         }

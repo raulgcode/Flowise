@@ -105,7 +105,7 @@ class Teradata_MCP implements INode {
             throw new Error('Missing MCP Server URL')
         }
         // Determine auth method from credentials
-        let serverParams: any = {
+        const serverParams: any = {
             url: mcpUrl,
             headers: {}
         }
@@ -122,7 +122,7 @@ class Teradata_MCP implements INode {
             throw new Error('Missing credentials: provide Bearer token from flow/credentials OR username/password from credentials')
         }
         const workspaceId = options?.searchOptions?.workspaceId?._value || options?.workspaceId || 'tdws_default'
-        let sandbox: ICommonObject = {}
+        const sandbox: ICommonObject = {}
         const cacheKey = hash({ workspaceId, serverParams, sandbox })
         if (options.cachePool) {
             const cachedResult = await options.cachePool.getMCPCache(cacheKey)

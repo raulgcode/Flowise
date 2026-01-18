@@ -436,7 +436,7 @@ const AgentflowCanvas = () => {
 
         const cloneNodes = cloneDeep(nodes)
         const cloneEdges = cloneDeep(edges)
-        let toBeRemovedEdges = []
+        const toBeRemovedEdges = []
 
         for (let i = 0; i < cloneNodes.length; i++) {
             const node = cloneNodes[i]

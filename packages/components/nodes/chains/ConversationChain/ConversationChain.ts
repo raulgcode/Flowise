@@ -29,7 +29,7 @@ import {
 import { ConsoleCallbackHandler, CustomChainHandler, additionalCallbacks } from '../../../src/handler'
 import { getBaseClasses, handleEscapeCharacters, transformBracesWithColon } from '../../../src/utils'
 
-let systemMessage = `The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.`
+const systemMessage = `The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.`
 const inputKey = 'input'
 
 class ConversationChain_Chains implements INode {
@@ -136,7 +136,7 @@ class ConversationChain_Chains implements INode {
         const additionalCallback = await additionalCallbacks(nodeData, options)
 
         let res = ''
-        let callbacks = [loggerHandler, ...additionalCallback]
+        const callbacks = [loggerHandler, ...additionalCallback]
 
         if (process.env.DEBUG === 'true') {
             callbacks.push(new LCConsoleCallbackHandler())
@@ -173,7 +173,7 @@ const prepareChatPrompt = (nodeData: INodeData, humanImageMessages: MessageConte
     let prompt = nodeData.inputs?.systemMessagePrompt as string
     prompt = transformBracesWithColon(prompt)
     const chatPromptTemplate = nodeData.inputs?.chatPromptTemplate as ChatPromptTemplate
-    let model = nodeData.inputs?.model as BaseChatModel
+    const model = nodeData.inputs?.model as BaseChatModel
 
     if (chatPromptTemplate && chatPromptTemplate.promptMessages.length) {
         const sysPrompt = chatPromptTemplate.promptMessages[0]
@@ -225,7 +225,7 @@ const prepareChatPrompt = (nodeData: INodeData, humanImageMessages: MessageConte
 }
 
 const prepareChain = async (nodeData: INodeData, options: ICommonObject, sessionId?: string) => {
-    let model = nodeData.inputs?.model as BaseChatModel
+    const model = nodeData.inputs?.model as BaseChatModel
     const memory = nodeData.inputs?.memory as FlowiseMemory
     const memoryKey = memory.memoryKey ?? 'chat_history'
     const prependMessages = options?.prependMessages

@@ -231,7 +231,7 @@ const SSOConfigPage = () => {
     }
 
     const validateAndTest = async (providerName) => {
-        let validationErrors = []
+        const validationErrors = []
         switch (providerName) {
             case 'Azure':
                 validateAzureFields(validationErrors)

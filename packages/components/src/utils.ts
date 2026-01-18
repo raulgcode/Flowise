@@ -668,14 +668,14 @@ const jsonEscapeCharacters = [
     { escape: '\\', value: 'FLOWISE_BACKSLASH' }
 ]
 
-function handleEscapesJSONParse(input: string, reverse: Boolean): string {
+function handleEscapesJSONParse(input: string, reverse: boolean): string {
     for (const element of jsonEscapeCharacters) {
         input = reverse ? input.replaceAll(element.value, element.escape) : input.replaceAll(element.escape, element.value)
     }
     return input
 }
 
-function iterateEscapesJSONParse(input: any, reverse: Boolean): any {
+function iterateEscapesJSONParse(input: any, reverse: boolean): any {
     for (const element in input) {
         const type = typeof input[element]
         if (type === 'string') input[element] = handleEscapesJSONParse(input[element], reverse)
@@ -684,7 +684,7 @@ function iterateEscapesJSONParse(input: any, reverse: Boolean): any {
     return input
 }
 
-export function handleEscapeCharacters(input: any, reverse: Boolean): any {
+export function handleEscapeCharacters(input: any, reverse: boolean): any {
     const type = typeof input
     if (type === 'string') return handleEscapesJSONParse(input, reverse)
     else if (type === 'object') return iterateEscapesJSONParse(input, reverse)
@@ -981,7 +981,7 @@ export const getVars = async (
  * @param {IVariable[]} variables
  */
 export const prepareSandboxVars = (variables: IVariable[]) => {
-    let vars = {}
+    const vars = {}
     if (variables) {
         for (const item of variables) {
             let value = item.value
@@ -1684,7 +1684,7 @@ export const executeJavaScriptCode = async (
         try {
             const response = await vm.run(`module.exports = async function() {${code}}()`, __dirname)
 
-            let finalOutput = response
+            const finalOutput = response
 
             // Stream output if streaming function provided
             if (streamOutput && finalOutput) {

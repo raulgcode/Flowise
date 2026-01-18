@@ -51,7 +51,7 @@ const ShareWithWorkspaceDialog = ({ show, dialogProps, onCancel, setError }) => 
     const onRowUpdate = (newRow) => {
         setTimeout(() => {
             setOutputSchema((prevRows) => {
-                let allRows = [...cloneDeep(prevRows)]
+                const allRows = [...cloneDeep(prevRows)]
                 const indexToUpdate = allRows.findIndex((row) => row.id === newRow.id)
                 if (indexToUpdate >= 0) {
                     allRows[indexToUpdate] = { ...newRow }

@@ -75,7 +75,7 @@ export class TypeORMDriver extends VectorStoreDriver {
 
     sanitizeDocuments(documents: Document[]) {
         // Remove NULL characters which triggers error on PG
-        for (var i in documents) {
+        for (const i in documents) {
             documents[i].pageContent = documents[i].pageContent.replace(/\0/g, '')
         }
 

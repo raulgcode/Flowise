@@ -137,7 +137,7 @@ class HumanInput_Agentflow implements INode {
         const humanInput: IHumanInput = typeof _humanInput === 'string' ? JSON.parse(_humanInput) : _humanInput
 
         const humanInputEnableFeedback = nodeData.inputs?.humanInputEnableFeedback as boolean
-        let humanInputDescriptionType = nodeData.inputs?.humanInputDescriptionType as string
+        const humanInputDescriptionType = nodeData.inputs?.humanInputDescriptionType as string
         const model = nodeData.inputs?.humanInputModel as string
         const modelConfig = nodeData.inputs?.humanInputModelConfig as ICommonObject
         const _humanInputModelPrompt = nodeData.inputs?.humanInputModelPrompt as string

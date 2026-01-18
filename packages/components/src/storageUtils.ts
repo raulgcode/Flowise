@@ -494,7 +494,7 @@ interface FileInfo {
 }
 
 function getFilePaths(dir: string): FileInfo[] {
-    let results: FileInfo[] = []
+    const results: FileInfo[] = []
 
     function readDirectory(directory: string) {
         try {
@@ -712,7 +712,7 @@ const _deleteS3Folder = async (location: string) => {
             Prefix: location,
             ContinuationToken: token
         })
-        let list = await s3Client.send(listCommand)
+        const list = await s3Client.send(listCommand)
         if (list.KeyCount) {
             const deleteCommand = new DeleteObjectsCommand({
                 Bucket: Bucket,
@@ -721,7 +721,7 @@ const _deleteS3Folder = async (location: string) => {
                     Quiet: false
                 }
             })
-            let deleted = await s3Client.send(deleteCommand)
+            const deleted = await s3Client.send(deleteCommand)
             // @ts-ignore
             count += deleted.Deleted.length
 
@@ -1100,7 +1100,7 @@ export const getS3Config = () => {
 
 const _sanitizeFilename = (filename: string): string => {
     if (filename) {
-        let sanitizedFilename = sanitize(filename)
+        const sanitizedFilename = sanitize(filename)
         // remove all leading .
         return sanitizedFilename.replace(/^\.+/, '')
     }

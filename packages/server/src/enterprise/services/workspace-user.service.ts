@@ -190,7 +190,7 @@ export class WorkspaceUserService {
         if (!user) throw new InternalFlowiseError(StatusCodes.NOT_FOUND, UserErrorMessage.USER_NOT_FOUND)
         const ownerRole = await this.roleService.readGeneralRoleByName(GeneralRole.OWNER, queryRunner)
 
-        let workspaceUser = await queryRunner.manager
+        const workspaceUser = await queryRunner.manager
             .createQueryBuilder(WorkspaceUser, 'workspaceUser')
             .innerJoinAndSelect('workspaceUser.workspace', 'workspace')
             .innerJoinAndSelect('workspaceUser.role', 'role')
@@ -258,7 +258,7 @@ export class WorkspaceUserService {
         const user = await this.userService.readUserById(data.createdBy, queryRunner)
         if (!user) throw new InternalFlowiseError(StatusCodes.NOT_FOUND, UserErrorMessage.USER_NOT_FOUND)
 
-        let organizationUser = await queryRunner.manager.findOneBy(OrganizationUser, { organizationId: organization.id, userId: user.id })
+        const organizationUser = await queryRunner.manager.findOneBy(OrganizationUser, { organizationId: organization.id, userId: user.id })
         if (!organizationUser)
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, OrganizationUserErrorMessage.ORGANIZATION_USER_NOT_FOUND)
         organizationUser.updatedBy = user.id

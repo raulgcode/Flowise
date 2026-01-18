@@ -26,7 +26,7 @@ export const calculateCost = (metricsArray: ICommonObject[]) => {
             }
 
             if (costValues.total_price > 0) {
-                let cost = costValues.total_cost * (totalTokens / 1000)
+                const cost = costValues.total_cost * (totalTokens / 1000)
                 totalTokensCost = formatCost(cost)
             } else {
                 let totalCost = 0

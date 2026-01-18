@@ -70,7 +70,7 @@ const getDateTimeFormatted = (date) => {
 }
 
 const subtractTime = (months, days, hours) => {
-    let checkDate = new Date()
+    const checkDate = new Date()
 
     if (months > 0) {
         checkDate.setMonth(checkDate.getMonth() - months)

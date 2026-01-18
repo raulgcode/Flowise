@@ -137,7 +137,7 @@ const buildAndInitTool = async (chatflowid: string, _chatId?: string, _apiMessag
         availableVariables,
         variableOverrides
     )
-    let nodeToExecuteData = reactFlowNodeData
+    const nodeToExecuteData = reactFlowNodeData
 
     const nodeInstanceFilePath = appServer.nodesPool.componentNodes[nodeToExecuteData.name].filePath as string
     const nodeModule = await import(nodeInstanceFilePath)

@@ -411,7 +411,7 @@ class Qdrant_VectorStores implements INode {
         const qdrantVectorDimension = nodeData.inputs?.qdrantVectorDimension
         const output = nodeData.outputs?.output as string
         const topK = nodeData.inputs?.topK as string
-        let queryFilter = nodeData.inputs?.qdrantFilter
+        const queryFilter = nodeData.inputs?.qdrantFilter
         const contentPayloadKey = nodeData.inputs?.contentPayloadKey || 'content'
         const metadataPayloadKey = nodeData.inputs?.metadataPayloadKey || 'metadata'
         const isFileUploadEnabled = nodeData.inputs?.fileUpload as boolean

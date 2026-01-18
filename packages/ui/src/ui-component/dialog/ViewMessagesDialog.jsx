@@ -367,7 +367,7 @@ const ViewMessagesDialog = ({ show, dialogProps, onCancel }) => {
 
             const exportFileDefaultName = `${dialogProps.chatflow.id}-Message.json`
 
-            let linkElement = document.createElement('a')
+            const linkElement = document.createElement('a')
             linkElement.setAttribute('href', dataUri)
             linkElement.setAttribute('download', exportFileDefaultName)
             linkElement.click()
@@ -532,7 +532,7 @@ const ViewMessagesDialog = ({ show, dialogProps, onCancel }) => {
     }
 
     const transformChatPKToParams = (chatPK) => {
-        let [c1, c2, ...rest] = chatPK.split('_')
+        const [c1, c2, ...rest] = chatPK.split('_')
         const chatId = c1
         const memoryType = c2
         const sessionId = rest.join('_')

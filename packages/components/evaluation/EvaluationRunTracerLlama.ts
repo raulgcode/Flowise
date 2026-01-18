@@ -30,7 +30,7 @@ export class EvaluationRunTracerLlama {
                         const encoding = encoding_for_model(model)
                         if (encoding) {
                             const { messages } = event.detail.payload
-                            let tokenCount = messages.reduce((count: number, message: ChatMessage) => {
+                            const tokenCount = messages.reduce((count: number, message: ChatMessage) => {
                                 return count + encoding.encode(extractText(message.content)).length
                             }, 0)
                             EvaluationRunTracerLlama.tokenCounts.set(evalID + '_promptTokens', tokenCount)
@@ -88,7 +88,7 @@ export class EvaluationRunTracerLlama {
         const evalID = event.reason.parent?.caller?.evaluationRunId || event.reason.caller?.evaluationRunId
         if (!evalID) return
         const startTime = EvaluationRunTracerLlama.startTimes.get(evalID + '_' + label) as number
-        let model =
+        const model =
             (event as any).reason?.caller?.model || (event as any).reason?.caller?.llm?.model || EvaluationRunTracerLlama.models.get(evalID)
 
         if (event.detail.payload?.response?.message && model) {

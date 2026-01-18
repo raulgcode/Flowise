@@ -248,7 +248,7 @@ class ConditionAgent_Agentflow implements INode {
 
     async run(nodeData: INodeData, question: string, options: ICommonObject): Promise<any> {
         let llmIds: ICommonObject | undefined
-        let analyticHandlers = options.analyticHandlers as AnalyticHandler
+        const analyticHandlers = options.analyticHandlers as AnalyticHandler
 
         try {
             const abortController = options.abortController as AbortController
@@ -291,7 +291,7 @@ class ConditionAgent_Agentflow implements INode {
                     ...modelConfig
                 }
             }
-            let llmNodeInstance = (await newLLMNodeInstance.init(newNodeData, '', options)) as BaseChatModel
+            const llmNodeInstance = (await newLLMNodeInstance.init(newNodeData, '', options)) as BaseChatModel
 
             const isStructuredOutput =
                 _conditionAgentScenarios && Array.isArray(_conditionAgentScenarios) && _conditionAgentScenarios.length > 0
@@ -315,9 +315,9 @@ class ConditionAgent_Agentflow implements INode {
                 }
             ]
             // Use to store messages with image file references as we do not want to store the base64 data into database
-            let runtimeImageMessagesWithFileRef: BaseMessageLike[] = []
+            const runtimeImageMessagesWithFileRef: BaseMessageLike[] = []
             // Use to keep track of past messages with image file references
-            let pastImageMessagesWithFileRef: BaseMessageLike[] = []
+            const pastImageMessagesWithFileRef: BaseMessageLike[] = []
 
             input = `{"input": ${input}, "scenarios": ${JSON.stringify(
                 _conditionAgentScenarios.map((scenario) => scenario.scenario)

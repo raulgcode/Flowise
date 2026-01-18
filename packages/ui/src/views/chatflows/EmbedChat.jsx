@@ -177,7 +177,7 @@ export const defaultThemeConfig = {
 }
 
 const customStringify = (obj) => {
-    let stringified = JSON.stringify(obj, null, 4)
+    const stringified = JSON.stringify(obj, null, 4)
         .replace(/"([^"]+)":/g, '$1:')
         .replace(/: "([^"]+)"/g, (match, value) => (value.includes('<') ? `: "${value}"` : `: '${value}'`))
         .replace(/: "(true|false|\d+)"/g, ': $1')

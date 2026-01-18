@@ -48,7 +48,7 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
 
     const onSave = async () => {
         try {
-            let value = {
+            const value = {
                 allowedOrigins: [...inputFields],
                 allowedOriginsError: errorMessage
             }
@@ -96,10 +96,10 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
     useEffect(() => {
         if (dialogProps.chatflow && dialogProps.chatflow.chatbotConfig) {
             try {
-                let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+                const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
                 setChatbotConfig(chatbotConfig || {})
                 if (chatbotConfig.allowedOrigins) {
-                    let inputFields = [...chatbotConfig.allowedOrigins]
+                    const inputFields = [...chatbotConfig.allowedOrigins]
                     setInputFields(inputFields)
                 } else {
                     setInputFields([''])

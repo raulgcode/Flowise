@@ -104,7 +104,7 @@ export const buildAgentGraph = async ({
         let finalResult = ''
         let finalSummarization = ''
         let lastWorkerResult = ''
-        let agentReasoning: IAgentReasoning[] = []
+        const agentReasoning: IAgentReasoning[] = []
         let isSequential = false
         let lastMessageRaw = {} as AIMessageChunk
         let finalAction: IAction = {}
@@ -468,7 +468,7 @@ const compileMultiAgentsGraph = async (params: MultiAgentsGraphParams) => {
     const availableVariables = await appDataSource.getRepository(Variable).findBy(getWorkspaceSearchOptions(agentflow.workspaceId))
     const { nodeOverrides, variableOverrides, apiOverrideStatus } = getAPIOverrideConfig(agentflow)
 
-    let supervisorWorkers: { [key: string]: IMultiAgentNode[] } = {}
+    const supervisorWorkers: { [key: string]: IMultiAgentNode[] } = {}
 
     // Init worker nodes
     for (const workerNode of workerNodes) {
@@ -554,7 +554,7 @@ const compileMultiAgentsGraph = async (params: MultiAgentsGraphParams) => {
                 workflowGraph.addEdge(worker, supervisorResult.name)
             }
 
-            let conditionalEdges: { [key: string]: string } = {}
+            const conditionalEdges: { [key: string]: string } = {}
             for (let i = 0; i < supervisorResult.workers.length; i++) {
                 conditionalEdges[supervisorResult.workers[i]] = supervisorResult.workers[i]
             }
@@ -570,7 +570,7 @@ const compileMultiAgentsGraph = async (params: MultiAgentsGraphParams) => {
             ;(workflowGraph as any).signal = options.signal
 
             // Get memory
-            let memory = supervisorResult?.checkpointMemory
+            const memory = supervisorResult?.checkpointMemory
 
             const graph = workflowGraph.compile({ checkpointer: memory })
 
@@ -578,7 +578,7 @@ const compileMultiAgentsGraph = async (params: MultiAgentsGraphParams) => {
             const callbacks = await additionalCallbacks(flowNodeData, options)
             const config = { configurable: { thread_id: threadId } }
 
-            let prependMessages = []
+            const prependMessages = []
             // Only append in the first message
             if (prependHistoryMessages.length === chatHistory.length) {
                 for (const message of prependHistoryMessages) {
@@ -687,11 +687,11 @@ const compileSeqAgentsGraph = async (params: SeqAgentsGraphParams) => {
     /*** End of Validation ***/
 
     let flowNodeData
-    let conditionalEdges: Record<string, { nodes: Record<string, string>; func: any }> = {}
-    let interruptedRouteMapping: Record<string, Record<string, string>> = {}
-    let conditionalToolNodes: Record<string, { source: ISeqAgentNode; toolNodes: ISeqAgentNode[] }> = {}
-    let bindModel: Record<string, any> = {}
-    let interruptToolNodeNames = []
+    const conditionalEdges: Record<string, { nodes: Record<string, string>; func: any }> = {}
+    const interruptedRouteMapping: Record<string, Record<string, string>> = {}
+    const conditionalToolNodes: Record<string, { source: ISeqAgentNode; toolNodes: ISeqAgentNode[] }> = {}
+    const bindModel: Record<string, any> = {}
+    const interruptToolNodeNames = []
 
     /*** Get API Config ***/
     const availableVariables = await appDataSource.getRepository(Variable).findBy(getWorkspaceSearchOptions(agentflow.workspaceId))
@@ -996,7 +996,7 @@ const compileSeqAgentsGraph = async (params: SeqAgentsGraphParams) => {
 
     /*** Get memory ***/
     const startNode = reactFlowNodes.find((node: IReactFlowNode) => node.data.name === 'seqStart')
-    let memory = startNode?.data.instance?.checkpointMemory
+    const memory = startNode?.data.instance?.checkpointMemory
 
     try {
         const graph = seqGraph.compile({
@@ -1008,7 +1008,7 @@ const compileSeqAgentsGraph = async (params: SeqAgentsGraphParams) => {
         const callbacks = await additionalCallbacks(flowNodeData as any, options)
         const config = { configurable: { thread_id: threadId }, bindModel }
 
-        let prependMessages = []
+        const prependMessages = []
         // Only append in the first message
         if (prependHistoryMessages.length === chatHistory.length) {
             for (const message of prependHistoryMessages) {

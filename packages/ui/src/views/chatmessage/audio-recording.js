@@ -34,7 +34,7 @@ function handleHidingRecordingControlButtons() {
 let audioRecordStartTime
 
 /** Stores the maximum recording time in hours to stop recording once maximum recording hour has been reached */
-let maximumRecordingTimeInHours = 1
+const maximumRecordingTimeInHours = 1
 
 /** Stores the reference of the setInterval function that controls the timer in audio recording*/
 let elapsedTimeTimer
@@ -151,7 +151,7 @@ function handleElapsedRecordingTime() {
     //create an interval that compute & displays elapsed time, as well as, animate red dot - every second
     elapsedTimeTimer = setInterval(() => {
         //compute the elapsed time every second
-        let elapsedTime = computeElapsedTime(audioRecordStartTime) //pass the actual record start time
+        const elapsedTime = computeElapsedTime(audioRecordStartTime) //pass the actual record start time
         //display the elapsed time
         displayElapsedTimeDuringAudioRecording(elapsedTime)
     }, 1000) //every second
@@ -175,10 +175,10 @@ function displayElapsedTimeDuringAudioRecording(elapsedTime) {
  */
 function elapsedTimeReachedMaximumNumberOfHours(elapsedTime) {
     //Split the elapsed time by the symbol that separates the hours, minutes and seconds :
-    let elapsedTimeSplit = elapsedTime.split(':')
+    const elapsedTimeSplit = elapsedTime.split(':')
 
     //Turn the maximum recording time in hours to a string and pad it with zero if less than 10
-    let maximumRecordingTimeInHoursAsString =
+    const maximumRecordingTimeInHoursAsString =
         maximumRecordingTimeInHours < 10 ? '0' + maximumRecordingTimeInHours : maximumRecordingTimeInHours.toString()
 
     //if the elapsed time reach hours and also reach the maximum recording time in hours return true
@@ -191,7 +191,7 @@ function elapsedTimeReachedMaximumNumberOfHours(elapsedTime) {
  */
 function computeElapsedTime(startTime) {
     //record end time
-    let endTime = new Date()
+    const endTime = new Date()
 
     //time difference in ms
     let timeDiff = endTime - startTime
@@ -216,13 +216,13 @@ function computeElapsedTime(startTime) {
     timeDiff = Math.floor(timeDiff / 60)
 
     //extract integer hours that don't form a day using %
-    let hours = timeDiff % 24 //no need to floor possible incomplete hours, because they've been handled as seconds
+    const hours = timeDiff % 24 //no need to floor possible incomplete hours, because they've been handled as seconds
 
     //convert time difference from hours to days
     timeDiff = Math.floor(timeDiff / 24)
 
     // the rest of timeDiff is number of days
-    let days = timeDiff //add days to hours
+    const days = timeDiff //add days to hours
 
     let totalHours = hours + days * 24
     totalHours = totalHours < 10 ? '0' + totalHours : totalHours
@@ -298,12 +298,12 @@ export const audioRecorder = {
         //return a promise that would return the blob or URL of the recording
         return new Promise((resolve) => {
             //save audio type to pass to set the Blob type
-            let mimeType = audioRecorder.mediaRecorder.mimeType
+            const mimeType = audioRecorder.mediaRecorder.mimeType
 
             //listen to the stop event in order to create & return a single Blob object
             audioRecorder.mediaRecorder.addEventListener('stop', () => {
                 //create a single blob object, as we might have gathered a few Blob objects that needs to be joined as one
-                let audioBlob = new Blob(audioRecorder.audioBlobs, { type: mimeType })
+                const audioBlob = new Blob(audioRecorder.audioBlobs, { type: mimeType })
 
                 //resolve promise with the single audio blob representing the recorded audio
                 resolve(audioBlob)

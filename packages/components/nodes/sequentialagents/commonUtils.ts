@@ -154,7 +154,7 @@ export const customGet = (obj: any, path: string) => {
         const parts = path.split('.')
         let result = obj
 
-        for (let part of parts) {
+        for (const part of parts) {
             if (part.includes('[') && part.includes(']')) {
                 const [name, indexPart] = part.split('[')
                 const index = parseInt(indexPart.replace(']', ''))

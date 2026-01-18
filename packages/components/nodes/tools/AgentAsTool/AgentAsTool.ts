@@ -192,7 +192,7 @@ class AgentAsTool_Tools implements INode {
             toolInput = customInput
         }
 
-        let name = _name || 'agentflow_tool'
+        const name = _name || 'agentflow_tool'
 
         return new AgentflowTool({
             name,

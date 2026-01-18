@@ -687,7 +687,7 @@ export const executeFlow = async ({
 
             // Find the previous chat message with the same action id and remove the action
             if (incomingInput.action && Object.keys(incomingInput.action).length) {
-                let query = await appDataSource
+                const query = await appDataSource
                     .getRepository(ChatMessage)
                     .createQueryBuilder('chat_message')
                     .where('chat_message.chatId = :chatId', { chatId })
@@ -715,7 +715,7 @@ export const executeFlow = async ({
             }
 
             // Prepare response
-            let result: ICommonObject = {}
+            const result: ICommonObject = {}
             result.text = finalResult
 
             result.question = incomingInput.question
@@ -841,7 +841,7 @@ export const executeFlow = async ({
                         logger
                     }
                     const customFuncNodeInstance = new nodeModule.nodeClass()
-                    let moderatedResponse = await customFuncNodeInstance.init(nodeData, question, options)
+                    const moderatedResponse = await customFuncNodeInstance.init(nodeData, question, options)
                     if (typeof moderatedResponse === 'string') {
                         result.text = handleEscapeCharacters(moderatedResponse, true)
                     } else if (typeof moderatedResponse === 'object') {

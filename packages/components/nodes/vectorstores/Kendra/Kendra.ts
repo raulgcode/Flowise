@@ -120,7 +120,7 @@ class Kendra_VectorStores implements INode {
             const isFileUploadEnabled = nodeData.inputs?.fileUpload as boolean
 
             const credentialData = await getCredentialData(nodeData.credential ?? '', options)
-            let clientConfig: any = { region }
+            const clientConfig: any = { region }
 
             if (credentialData && Object.keys(credentialData).length !== 0) {
                 const accessKeyId = getCredentialParam('awsKey', credentialData, nodeData)
@@ -193,7 +193,7 @@ class Kendra_VectorStores implements INode {
             const region = nodeData.inputs?.region as string
 
             const credentialData = await getCredentialData(nodeData.credential ?? '', options)
-            let clientConfig: any = { region }
+            const clientConfig: any = { region }
 
             if (credentialData && Object.keys(credentialData).length !== 0) {
                 const accessKeyId = getCredentialParam('awsKey', credentialData, nodeData)
@@ -236,7 +236,7 @@ class Kendra_VectorStores implements INode {
         const isFileUploadEnabled = nodeData.inputs?.fileUpload as boolean
 
         const credentialData = await getCredentialData(nodeData.credential ?? '', options)
-        let clientOptions: any = {}
+        const clientOptions: any = {}
 
         if (credentialData && Object.keys(credentialData).length !== 0) {
             clientOptions.credentials = {

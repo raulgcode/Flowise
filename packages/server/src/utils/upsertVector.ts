@@ -135,7 +135,7 @@ export const executeUpsert = async ({
 
     /*** Get session ID ***/
     const memoryNode = findMemoryNode(nodes, edges)
-    let sessionId = getMemorySessionId(memoryNode, incomingInput, chatId, isInternal)
+    const sessionId = getMemorySessionId(memoryNode, incomingInput, chatId, isInternal)
 
     /*** Find the 1 final vector store will be upserted  ***/
     const vsNodes = nodes.filter((node) => node.data.category === 'Vector Stores')

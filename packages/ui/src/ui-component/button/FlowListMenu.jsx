@@ -323,14 +323,14 @@ export default function FlowListMenu({ chatflow, isAgentCanvas, isAgentflowV2, s
         setAnchorEl(null)
         try {
             const flowData = JSON.parse(chatflow.flowData)
-            let dataStr = JSON.stringify(generateExportFlowData(flowData), null, 2)
+            const dataStr = JSON.stringify(generateExportFlowData(flowData), null, 2)
             //let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr)
             const blob = new Blob([dataStr], { type: 'application/json' })
             const dataUri = URL.createObjectURL(blob)
 
-            let exportFileDefaultName = `${chatflow.name} ${title}.json`
+            const exportFileDefaultName = `${chatflow.name} ${title}.json`
 
-            let linkElement = document.createElement('a')
+            const linkElement = document.createElement('a')
             linkElement.setAttribute('href', dataUri)
             linkElement.setAttribute('download', exportFileDefaultName)
             linkElement.click()

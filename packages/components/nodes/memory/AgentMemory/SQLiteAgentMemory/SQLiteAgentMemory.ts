@@ -66,7 +66,7 @@ class SQLiteAgentMemory_Memory implements INode {
 
         const database = path.join(process.env.DATABASE_PATH ?? path.join(getUserHome(), '.flowise'), 'database.sqlite')
 
-        let datasourceOptions: ICommonObject = {
+        const datasourceOptions: ICommonObject = {
             database,
             ...additionalConfiguration,
             type: 'sqlite'

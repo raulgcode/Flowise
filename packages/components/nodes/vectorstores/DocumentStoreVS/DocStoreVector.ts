@@ -89,7 +89,7 @@ class DocStore_VectorStores implements INode {
         const embeddingConfig = JSON.parse(entity.embeddingConfig)
         data.embeddingName = embeddingConfig.name
         data.embeddingConfig = embeddingConfig.config
-        let embeddingObj = await _createEmbeddingsObject(options.componentNodes, data, options)
+        const embeddingObj = await _createEmbeddingsObject(options.componentNodes, data, options)
         if (!embeddingObj) {
             return { error: 'Failed to create EmbeddingObj' }
         }

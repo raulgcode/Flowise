@@ -131,13 +131,13 @@ class Couchbase_VectorStores implements INode {
             const scopeName = nodeData.inputs?.scopeName as string
             const collectionName = nodeData.inputs?.collectionName as string
             const indexName = nodeData.inputs?.indexName as string
-            let textKey = nodeData.inputs?.textKey as string
-            let embeddingKey = nodeData.inputs?.embeddingKey as string
+            const textKey = nodeData.inputs?.textKey as string
+            const embeddingKey = nodeData.inputs?.embeddingKey as string
             const embeddings = nodeData.inputs?.embeddings as Embeddings
 
-            let connectionString = getCredentialParam('connectionString', credentialData, nodeData)
-            let databaseUsername = getCredentialParam('username', credentialData, nodeData)
-            let databasePassword = getCredentialParam('password', credentialData, nodeData)
+            const connectionString = getCredentialParam('connectionString', credentialData, nodeData)
+            const databaseUsername = getCredentialParam('username', credentialData, nodeData)
+            const databasePassword = getCredentialParam('password', credentialData, nodeData)
 
             const docs = nodeData.inputs?.document as Document[]
 
@@ -184,14 +184,14 @@ class Couchbase_VectorStores implements INode {
         const scopeName = nodeData.inputs?.scopeName as string
         const collectionName = nodeData.inputs?.collectionName as string
         const indexName = nodeData.inputs?.indexName as string
-        let textKey = nodeData.inputs?.textKey as string
-        let embeddingKey = nodeData.inputs?.embeddingKey as string
+        const textKey = nodeData.inputs?.textKey as string
+        const embeddingKey = nodeData.inputs?.embeddingKey as string
         const embeddings = nodeData.inputs?.embeddings as Embeddings
         const couchbaseMetadataFilter = nodeData.inputs?.couchbaseMetadataFilter
 
-        let connectionString = getCredentialParam('connectionString', credentialData, nodeData)
-        let databaseUsername = getCredentialParam('username', credentialData, nodeData)
-        let databasePassword = getCredentialParam('password', credentialData, nodeData)
+        const connectionString = getCredentialParam('connectionString', credentialData, nodeData)
+        const databaseUsername = getCredentialParam('username', credentialData, nodeData)
+        const databasePassword = getCredentialParam('password', credentialData, nodeData)
         let metadatafilter
 
         const couchbaseClient = await Cluster.connect(connectionString, {

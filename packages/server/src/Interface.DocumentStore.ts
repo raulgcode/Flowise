@@ -159,7 +159,7 @@ export interface IExecuteVectorStoreInsert extends IUpsertQueueAppServer {
 }
 
 const getFileName = (fileBase64: string) => {
-    let fileNames = []
+    const fileNames = []
     if (fileBase64.startsWith('FILE-STORAGE::')) {
         const names = fileBase64.substring(14)
         if (names.includes('[') && names.includes(']')) {
@@ -248,7 +248,7 @@ export class DocumentStoreDTO {
     constructor() {}
 
     static fromEntity(entity: DocumentStore): DocumentStoreDTO {
-        let documentStoreDTO = new DocumentStoreDTO()
+        const documentStoreDTO = new DocumentStoreDTO()
 
         Object.assign(documentStoreDTO, entity)
         documentStoreDTO.id = entity.id

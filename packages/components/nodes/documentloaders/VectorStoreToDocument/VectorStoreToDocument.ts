@@ -85,7 +85,7 @@ class VectorStoreToDocument_DocumentLoaders implements INode {
         console.log(JSON.stringify(docs, null, 2))
 
         if (output === 'document') {
-            let finaldocs = []
+            const finaldocs = []
             for (const doc of docs) {
                 if (minScore && doc[1] < minScore / 100) continue
                 finaldocs.push(doc[0])

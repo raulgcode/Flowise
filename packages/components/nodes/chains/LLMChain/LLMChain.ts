@@ -96,7 +96,7 @@ class LLMChain_Chains implements INode {
         const llmOutputParser = nodeData.inputs?.outputParser as BaseOutputParser
         this.outputParser = llmOutputParser
         if (llmOutputParser) {
-            let autoFix = (llmOutputParser as any).autoFix
+            const autoFix = (llmOutputParser as any).autoFix
             if (autoFix === true) {
                 this.outputParser = OutputFixingParser.fromLLM(model, llmOutputParser)
             }
@@ -230,8 +230,8 @@ const runPrediction = async (
                     chain.prompt.promptMessages.push(new HumanMessage({ content: messageContent }))
                 }
             } else if (chain.prompt instanceof FewShotPromptTemplate) {
-                let existingFewShotPromptTemplate = chain.prompt.examplePrompt.template as string
-                let newFewShotPromptTemplate = ChatPromptTemplate.fromMessages([
+                const existingFewShotPromptTemplate = chain.prompt.examplePrompt.template as string
+                const newFewShotPromptTemplate = ChatPromptTemplate.fromMessages([
                     HumanMessagePromptTemplate.fromTemplate(existingFewShotPromptTemplate)
                 ])
                 newFewShotPromptTemplate.promptMessages.push(new HumanMessage({ content: messageContent }))
@@ -245,7 +245,7 @@ const runPrediction = async (
     }
 
     if (promptValues && inputVariables.length > 0) {
-        let seen: string[] = []
+        const seen: string[] = []
 
         for (const variable of inputVariables) {
             seen.push(variable)

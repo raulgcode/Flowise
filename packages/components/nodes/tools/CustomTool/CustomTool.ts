@@ -127,7 +127,7 @@ class CustomTool_Tools implements INode {
 
             const flow = { chatflowId: options.chatflowid }
 
-            let dynamicStructuredTool = new DynamicStructuredTool(obj)
+            const dynamicStructuredTool = new DynamicStructuredTool(obj)
             dynamicStructuredTool.setVariables(variables)
             dynamicStructuredTool.setFlowObject(flow)
             dynamicStructuredTool.returnDirect = customToolReturnDirect

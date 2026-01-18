@@ -67,7 +67,7 @@ const createAssistant = async (requestBody: any, orgId: string): Promise<Assista
             const openai = new OpenAI({ apiKey: openAIApiKey })
 
             // Prepare tools
-            let tools = []
+            const tools = []
             if (assistantDetails.tools) {
                 for (const tool of assistantDetails.tools ?? []) {
                     tools.push({
@@ -328,7 +328,7 @@ const updateAssistant = async (assistantId: string, requestBody: any, workspaceI
 
             const openai = new OpenAI({ apiKey: openAIApiKey })
 
-            let tools = []
+            const tools = []
             if (assistantDetails.tools) {
                 for (const tool of assistantDetails.tools ?? []) {
                     tools.push({

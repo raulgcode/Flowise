@@ -181,7 +181,7 @@ class File_DocumentLoaders implements INode {
                 const bf = Buffer.from(splitDataURI.pop() || '', 'base64')
                 const blob = new Blob([bf])
 
-                let extension = ''
+                const extension = ''
                 // eslint-disable-next-line no-useless-escape
                 const match = file.match(/^data:([A-Za-z-+\/]+);base64,/)
 

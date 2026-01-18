@@ -111,6 +111,8 @@
         "@testing-library/jest-dom": "^5.11.10",
         "@testing-library/react": "^14.0.0",
         "@testing-library/user-event": "^12.8.3",
+        "@types/react": "^18.3.27",
+        "@types/react-dom": "^18.2.21",
         "@vitejs/plugin-react": "^4.2.0",
         "@vitest/browser": "^4.0.17",
         "@vitest/browser-playwright": "^4.0.17",

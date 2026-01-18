@@ -352,7 +352,7 @@ const FollowUpPrompts = ({ dialogProps }) => {
     const onSave = async () => {
         // TODO: saving without changing the prompt will not save the prompt
         try {
-            let value = {
+            const value = {
                 followUpPrompts: { status: followUpPromptsConfig.status }
             }
             chatbotConfig.followUpPrompts = value.followUpPrompts
@@ -413,8 +413,8 @@ const FollowUpPrompts = ({ dialogProps }) => {
 
     useEffect(() => {
         if (dialogProps.chatflow && dialogProps.chatflow.followUpPrompts) {
-            let chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
-            let followUpPromptsConfig = JSON.parse(dialogProps.chatflow.followUpPrompts)
+            const chatbotConfig = JSON.parse(dialogProps.chatflow.chatbotConfig)
+            const followUpPromptsConfig = JSON.parse(dialogProps.chatflow.followUpPrompts)
             setChatbotConfig(chatbotConfig || {})
             if (followUpPromptsConfig) {
                 setFollowUpPromptsConfig(followUpPromptsConfig)
@@ -431,7 +431,7 @@ const FollowUpPrompts = ({ dialogProps }) => {
                 return true
             }
             const provider = followUpPromptsOptions[selectedProvider]
-            for (let inputParam of provider.inputs) {
+            for (const inputParam of provider.inputs) {
                 if (!inputParam.optional) {
                     const param = inputParam.name === 'credential' ? 'credentialId' : inputParam.name
                     if (
