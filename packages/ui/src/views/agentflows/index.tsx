@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 // material-ui
 import { Chip, Box, Stack, ToggleButton, ToggleButtonGroup, IconButton } from '@mui/material'
@@ -31,36 +32,81 @@ import { useError } from '@/store/context/ErrorContext'
 // icons
 import { IconPlus, IconLayoutGrid, IconList, IconX, IconAlertTriangle } from '@tabler/icons-react'
 
+// Types
+import type { TranslationKeys } from '@/i18n/types'
+
+interface RootState {
+    customization: {
+        isDarkMode: boolean
+    }
+}
+
+interface AgentflowData {
+    id: string
+    name: string
+    category?: string
+    flowData: string
+    type: 'AGENTFLOW' | 'MULTIAGENT'
+}
+
+interface FlowNode {
+    data: {
+        name: string
+        label: string
+    }
+}
+
+interface FlowData {
+    nodes?: FlowNode[]
+}
+
+interface ImageItem {
+    imageSrc: string
+    label: string
+}
+
+interface IconItem {
+    name: string
+    icon: React.ComponentType
+    color: string
+}
+
+type ViewType = 'card' | 'list'
+type AgentflowVersion = 'v1' | 'v2'
+
 // ==============================|| AGENTS ||============================== //
 
-const Agentflows = () => {
+const Agentflows = (): JSX.Element => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const theme = useTheme()
-    const customization = useSelector((state) => state.customization)
+    const customization = useSelector((state: RootState) => state.customization)
 
-    const [isLoading, setLoading] = useState(true)
-    const [images, setImages] = useState({})
-    const [icons, setIcons] = useState({})
-    const [search, setSearch] = useState('')
+    const [isLoading, setLoading] = useState<boolean>(true)
+    const [images, setImages] = useState<Record<string, ImageItem[]>>({})
+    const [icons, setIcons] = useState<Record<string, IconItem[]>>({})
+    const [search, setSearch] = useState<string>('')
     const { error, setError } = useError()
 
     const getAllAgentflows = useApi(chatflowsApi.getAllAgentflows)
-    const [view, setView] = useState(localStorage.getItem('flowDisplayStyle') || 'card')
-    const [agentflowVersion, setAgentflowVersion] = useState(localStorage.getItem('agentFlowVersion') || 'v2')
-    const [showDeprecationNotice, setShowDeprecationNotice] = useState(true)
+    const [view, setView] = useState<ViewType>((localStorage.getItem('flowDisplayStyle') as ViewType) || 'card')
+    const [agentflowVersion, setAgentflowVersion] = useState<AgentflowVersion>(
+        (localStorage.getItem('agentFlowVersion') as AgentflowVersion) || 'v2'
+    )
+    const [showDeprecationNotice, setShowDeprecationNotice] = useState<boolean>(true)
 
     /* Table Pagination */
-    const [currentPage, setCurrentPage] = useState(1)
-    const [pageLimit, setPageLimit] = useState(DEFAULT_ITEMS_PER_PAGE)
-    const [total, setTotal] = useState(0)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [pageLimit, setPageLimit] = useState<number>(DEFAULT_ITEMS_PER_PAGE)
+    const [total, setTotal] = useState<number>(0)
 
-    const onChange = (page, pageLimit) => {
+    const onChange = (page: number, pageLimit: number): void => {
         setCurrentPage(page)
         setPageLimit(pageLimit)
         refresh(page, pageLimit, agentflowVersion)
     }
 
-    const refresh = (page, limit, nextView) => {
+    const refresh = (page?: number, limit?: number, nextView?: AgentflowVersion): void => {
         const params = {
             page: page || currentPage,
             limit: limit || pageLimit
@@ -68,32 +114,32 @@ const Agentflows = () => {
         getAllAgentflows.request(nextView === 'v2' ? 'AGENTFLOW' : 'MULTIAGENT', params)
     }
 
-    const handleChange = (event, nextView) => {
+    const handleChange = (_event: React.MouseEvent<HTMLElement>, nextView: ViewType | null): void => {
         if (nextView === null) return
         localStorage.setItem('flowDisplayStyle', nextView)
         setView(nextView)
     }
 
-    const handleVersionChange = (event, nextView) => {
+    const handleVersionChange = (_event: React.MouseEvent<HTMLElement>, nextView: AgentflowVersion | null): void => {
         if (nextView === null) return
         localStorage.setItem('agentFlowVersion', nextView)
         setAgentflowVersion(nextView)
         refresh(1, pageLimit, nextView)
     }
 
-    const onSearchChange = (event) => {
+    const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setSearch(event.target.value)
     }
 
-    function filterFlows(data) {
+    function filterFlows(data: AgentflowData): boolean {
         return (
             data.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-            (data.category && data.category.toLowerCase().indexOf(search.toLowerCase()) > -1) ||
+            (data.category !== undefined && data.category.toLowerCase().indexOf(search.toLowerCase()) > -1) ||
             data.id.toLowerCase().indexOf(search.toLowerCase()) > -1
         )
     }
 
-    const addNew = () => {
+    const addNew = (): void => {
         if (agentflowVersion === 'v2') {
             navigate('/v2/agentcanvas')
         } else {
@@ -101,7 +147,7 @@ const Agentflows = () => {
         }
     }
 
-    const goToCanvas = (selectedAgentflow) => {
+    const goToCanvas = (selectedAgentflow: AgentflowData): void => {
         if (selectedAgentflow.type === 'AGENTFLOW') {
             navigate(`/v2/agentcanvas/${selectedAgentflow.id}`)
         } else {
@@ -109,7 +155,7 @@ const Agentflows = () => {
         }
     }
 
-    const handleDismissDeprecationNotice = () => {
+    const handleDismissDeprecationNotice = (): void => {
         setShowDeprecationNotice(false)
     }
 
@@ -134,13 +180,13 @@ const Agentflows = () => {
     useEffect(() => {
         if (getAllAgentflows.data) {
             try {
-                const agentflows = getAllAgentflows.data?.data
+                const agentflows = getAllAgentflows.data?.data as AgentflowData[]
                 setTotal(getAllAgentflows.data?.total)
-                const images = {}
-                const icons = {}
+                const images: Record<string, ImageItem[]> = {}
+                const icons: Record<string, IconItem[]> = {}
                 for (let i = 0; i < agentflows.length; i += 1) {
                     const flowDataStr = agentflows[i].flowData
-                    const flowData = JSON.parse(flowDataStr)
+                    const flowData: FlowData = JSON.parse(flowDataStr)
                     const nodes = flowData.nodes || []
                     images[agentflows[i].id] = []
                     icons[agentflows[i].id] = []
@@ -177,9 +223,9 @@ const Agentflows = () => {
                     <ViewHeader
                         onSearchChange={onSearchChange}
                         search={true}
-                        searchPlaceholder='Search Name or Category'
-                        title='Agentflows'
-                        description='Multi-agent systems, workflow orchestration'
+                        searchPlaceholder={t('agentflows.searchPlaceholder' as TranslationKeys)}
+                        title={t('agentflows.title' as TranslationKeys)}
+                        description={t('agentflows.description' as TranslationKeys)}
                     >
                         <ToggleButtonGroup
                             sx={{ borderRadius: 2, maxHeight: 40 }}
@@ -194,12 +240,11 @@ const Agentflows = () => {
                                     borderRadius: 2,
                                     color: customization.isDarkMode ? 'white' : 'inherit'
                                 }}
-                                variant='contained'
                                 value='v2'
-                                title='V2'
+                                title={t('agentflows.v2' as TranslationKeys)}
                             >
-                                <Chip sx={{ mr: 1 }} label='NEW' size='small' color='primary' />
-                                V2
+                                <Chip sx={{ mr: 1 }} label={t('common.new' as TranslationKeys)} size='small' color='primary' />
+                                {t('agentflows.v2' as TranslationKeys)}
                             </ToggleButton>
                             <ToggleButton
                                 sx={{
@@ -207,11 +252,10 @@ const Agentflows = () => {
                                     borderRadius: 2,
                                     color: customization.isDarkMode ? 'white' : 'inherit'
                                 }}
-                                variant='contained'
                                 value='v1'
-                                title='V1'
+                                title={t('agentflows.v1' as TranslationKeys)}
                             >
-                                V1
+                                {t('agentflows.v1' as TranslationKeys)}
                             </ToggleButton>
                         </ToggleButtonGroup>
                         <ToggleButtonGroup
@@ -228,9 +272,8 @@ const Agentflows = () => {
                                     borderRadius: 2,
                                     color: customization.isDarkMode ? 'white' : 'inherit'
                                 }}
-                                variant='contained'
                                 value='card'
-                                title='Card View'
+                                title={t('common.cardView' as TranslationKeys)}
                             >
                                 <IconLayoutGrid />
                             </ToggleButton>
@@ -240,9 +283,8 @@ const Agentflows = () => {
                                     borderRadius: 2,
                                     color: customization.isDarkMode ? 'white' : 'inherit'
                                 }}
-                                variant='contained'
                                 value='list'
-                                title='List View'
+                                title={t('common.listView' as TranslationKeys)}
                             >
                                 <IconList />
                             </ToggleButton>
@@ -254,7 +296,7 @@ const Agentflows = () => {
                             startIcon={<IconPlus />}
                             sx={{ borderRadius: 2, height: 40 }}
                         >
-                            Add New
+                            {t('common.addNew' as TranslationKeys)}
                         </StyledPermissionButton>
                     </ViewHeader>
 
@@ -282,11 +324,11 @@ const Agentflows = () => {
                                 }}
                             />
                             <Box sx={{ flex: 1 }}>
-                                <strong>V1 Agentflows are deprecated.</strong> We recommend migrating to V2 for improved performance and
-                                continued support.
+                                <strong>{t('agentflows.deprecationNotice.title' as TranslationKeys)}</strong>{' '}
+                                {t('agentflows.deprecationNotice.message' as TranslationKeys)}
                             </Box>
                             <IconButton
-                                aria-label='dismiss'
+                                aria-label={t('common.dismiss' as TranslationKeys)}
                                 size='small'
                                 onClick={handleDismissDeprecationNotice}
                                 sx={{
@@ -304,7 +346,7 @@ const Agentflows = () => {
                         <>
                             {!view || view === 'card' ? (
                                 <Box display='grid' gridTemplateColumns='repeat(3, 1fr)' gap={gridSpacing}>
-                                    {getAllAgentflows.data?.data.filter(filterFlows).map((data, index) => (
+                                    {getAllAgentflows.data?.data.filter(filterFlows).map((data: AgentflowData, index: number) => (
                                         <ItemCard
                                             key={index}
                                             onClick={() => goToCanvas(data)}
@@ -343,7 +385,7 @@ const Agentflows = () => {
                                     alt='AgentsEmptySVG'
                                 />
                             </Box>
-                            <div>No Agents Yet</div>
+                            <div>{t('agentflows.noAgentsYet' as TranslationKeys)}</div>
                         </Stack>
                     )}
                 </Stack>
