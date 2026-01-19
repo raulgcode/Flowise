@@ -8,8 +8,14 @@ export default defineConfig({
     plugins: [react()],
     resolve: {
         alias: {
-            '@': resolve(__dirname, 'src')
+            '@': resolve(__dirname, 'src'),
+            // Use path-to-regexp v6 for MSW compatibility - must use absolute path to pnpm store
+            'path-to-regexp': resolve(__dirname, '../../node_modules/.pnpm/path-to-regexp@6.3.0/node_modules/path-to-regexp')
         }
+    },
+    optimizeDeps: {
+        include: ['react-router-dom'],
+        exclude: ['msw', 'path-to-regexp']
     },
     test: {
         projects: [
