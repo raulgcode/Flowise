@@ -15,15 +15,8 @@ module.exports = {
         }
     },
     parser: '@typescript-eslint/parser',
-    parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: {
-            jsx: true
-        }
-    },
-    ignorePatterns: ['**/node_modules', '**/dist', '**/build', '**/package-lock.json'],
-    plugins: ['@typescript-eslint', 'unused-imports'],
+    ignorePatterns: ['**/node_modules', '**/dist', '**/build', '**/coverage', '**/package-lock.json'],
+    plugins: ['unused-imports'],
     rules: {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
@@ -46,20 +39,7 @@ module.exports = {
         'unused-imports/no-unused-vars': ['warn', { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }],
         'no-undef': 'off',
         'no-console': [process.env.CI ? 'error' : 'warn', { allow: ['warn', 'error', 'info'] }],
-        'prettier/prettier': 'error'
-    },
-    overrides: [
-        {
-            files: ['*.json'],
-            rules: {
-                '@typescript-eslint/no-unused-expressions': 'off'
-            }
-        },
-        {
-            files: ['*.ts', '*.tsx'],
-            rules: {
-                'react/prop-types': 'off'
-            }
-        }
-    ]
+        'prettier/prettier': 'error',
+        'no-control-regex': 0 // Used to match control regex's in user input
+    }
 }

@@ -1,9 +1,12 @@
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import ReactFlow, { Background, BackgroundVariant, Controls, MiniMap, ReactFlowProvider, useEdgesState, useNodesState } from 'reactflow'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import ReactFlow, { Background, Controls, MiniMap, ReactFlowProvider, useEdgesState, useNodesState } from 'reactflow'
 
+import { Alert, Snackbar } from '@mui/material'
 import { IconSparkles } from '@tabler/icons-react'
 
-import type { AgentFlowInstance, AgentflowProps, FlowData, FlowEdge, FlowNode } from './core/types'
+import { tokens } from './core/theme'
+import type { AgentFlowInstance, AgentflowProps, FlowData, FlowDataCallback, FlowEdge, FlowNode } from './core/types'
+import { applyValidationErrorsToNodes, validateFlow } from './core/validation'
 import {
     AgentflowHeader,
     ConnectionLine,
@@ -14,9 +17,11 @@ import {
     useFlowHandlers,
     useFlowNodes
 } from './features/canvas'
+import { ValidationFeedback } from './features/canvas/components'
 import { GenerateFlowDialog } from './features/generator'
+import { EditNodeDialog } from './features/node-editor'
 import { AddNodesDrawer, StyledFab } from './features/node-palette'
-import { useAgentflowContext } from './infrastructure/store'
+import { useAgentflowContext, useConfigContext } from './infrastructure/store'
 import { AgentflowProvider } from './AgentflowProvider'
 import { useAgentflow } from './useAgentflow'
 
@@ -40,37 +45,74 @@ function AgentflowCanvas({
 }: {
     initialFlow?: FlowData
     readOnly?: boolean
-    onFlowChange?: (flow: FlowData) => void
-    onSave?: (flow: FlowData) => void
-    onFlowGenerated?: (flow: FlowData) => void
+    onFlowChange?: FlowDataCallback
+    onSave?: FlowDataCallback
+    onFlowGenerated?: FlowDataCallback
     showDefaultHeader?: boolean
     showDefaultPalette?: boolean
     enableGenerator?: boolean
     renderHeader?: AgentflowProps['renderHeader']
     renderNodePalette?: AgentflowProps['renderNodePalette']
 }) {
-    const { state, setNodes, setEdges, setDirty, setReactFlowInstance } = useAgentflowContext()
+    const {
+        state,
+        syncNodesFromReactFlow,
+        syncEdgesFromReactFlow,
+        setDirty,
+        setReactFlowInstance,
+        closeEditDialog,
+        registerLocalStateSetters
+    } = useAgentflowContext()
+    const { isDarkMode } = useConfigContext()
     const agentflow = useAgentflow()
     const reactFlowWrapper = useRef<HTMLDivElement>(null)
+
+    // Memoize ReactFlow colors from theme tokens
+    const reactFlowColors = useMemo(() => {
+        const mode = isDarkMode ? 'dark' : 'light'
+        return {
+            minimapNode: tokens.colors.reactflow.minimap.node[mode],
+            minimapNodeStroke: tokens.colors.reactflow.minimap.nodeStroke[mode],
+            minimapBackground: tokens.colors.reactflow.minimap.background[mode],
+            minimapMask: tokens.colors.reactflow.minimap.mask[mode],
+            backgroundDots: tokens.colors.reactflow.background.dots[mode]
+        }
+    }, [isDarkMode])
 
     const [nodes, setLocalNodes, onNodesChange] = useNodesState(initialFlow?.nodes || [])
     const [edges, setLocalEdges, onEdgesChange] = useEdgesState(initialFlow?.edges || [])
     const [showGenerateDialog, setShowGenerateDialog] = useState(false)
 
+    // Constraint violation snackbar state
+    const [snackbar, setSnackbar] = useState<{ open: boolean; message: string }>({ open: false, message: '' })
+
+    const handleConstraintViolation = useCallback((message: string) => {
+        setSnackbar({ open: true, message })
+    }, [])
+
+    const handleSnackbarClose = useCallback(() => {
+        setSnackbar({ open: false, message: '' })
+    }, [])
+
     // Load available nodes
     const { availableNodes } = useFlowNodes()
 
-    // Sync local state with context
+    // Register local state setters with context on mount
     useEffect(() => {
-        setNodes(nodes as FlowNode[])
-    }, [nodes, setNodes])
+        registerLocalStateSetters(setLocalNodes, setLocalEdges)
+    }, [registerLocalStateSetters, setLocalNodes, setLocalEdges])
+
+    // Sync local ReactFlow state to context (when user interacts with canvas)
+    useEffect(() => {
+        syncNodesFromReactFlow(nodes as FlowNode[])
+    }, [nodes, syncNodesFromReactFlow])
 
     useEffect(() => {
-        setEdges(edges as FlowEdge[])
-    }, [edges, setEdges])
+        syncEdgesFromReactFlow(edges as FlowEdge[])
+    }, [edges, syncEdgesFromReactFlow])
 
     // Flow handlers
-    const { handleConnect, handleNodesChange, handleEdgesChange, handleAddNode } = useFlowHandlers({
+    const { handleConnect, handleNodesChange, handleNodeDragStop, handleEdgesChange, handleAddNode } = useFlowHandlers({
         nodes: nodes as FlowNode[],
         edges: edges as FlowEdge[],
         setLocalNodes: setLocalNodes as React.Dispatch<React.SetStateAction<FlowNode[]>>,
@@ -78,14 +120,16 @@ function AgentflowCanvas({
         onNodesChange,
         onEdgesChange,
         onFlowChange,
-        availableNodes
+        availableNodes,
+        onConstraintViolation: handleConstraintViolation
     })
 
     // Drag and drop handlers
     const { handleDragOver, handleDrop } = useDragAndDrop({
         nodes: nodes as FlowNode[],
         setLocalNodes: setLocalNodes as React.Dispatch<React.SetStateAction<FlowNode[]>>,
-        reactFlowWrapper: reactFlowWrapper as React.RefObject<HTMLDivElement>
+        reactFlowWrapper: reactFlowWrapper as React.RefObject<HTMLDivElement>,
+        onConstraintViolation: handleConstraintViolation
     })
 
     // Handle generated flow from dialog
@@ -106,12 +150,37 @@ function AgentflowCanvas({
         [setLocalNodes, setLocalEdges, setDirty, onFlowGenerated]
     )
 
-    // Handle save
+    // Handle save — run validation first and highlight problem nodes
     const handleSave = useCallback(() => {
-        if (onSave) {
-            onSave(agentflow.getFlow())
+        if (!onSave) return
+
+        const flowNodes = nodes as FlowNode[]
+        const flowEdges = edges as FlowEdge[]
+        const result = validateFlow(flowNodes, flowEdges, availableNodes)
+
+        // Update node border highlighting: set errors on failing nodes, clear errors on now-valid nodes
+        setLocalNodes((prev) => applyValidationErrorsToNodes(prev as FlowNode[], result.errors) as FlowNode[])
+
+        if (!result.valid) {
+            handleConstraintViolation('Flow has validation errors. Please fix them before saving.')
+            return
         }
-    }, [onSave, agentflow])
+
+        onSave(agentflow.getFlow())
+        setDirty(false)
+    }, [onSave, agentflow, setDirty, nodes, edges, availableNodes, setLocalNodes, handleConstraintViolation])
+
+    // Keyboard shortcut: Cmd+S / Ctrl+S to save
+    useEffect(() => {
+        const onKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault()
+                handleSave()
+            }
+        }
+        document.addEventListener('keydown', onKeyDown)
+        return () => document.removeEventListener('keydown', onKeyDown)
+    }, [handleSave])
 
     // Header props
     const headerProps = createHeaderProps(
@@ -129,7 +198,7 @@ function AgentflowCanvas({
     }
 
     return (
-        <div className='agentflow-container'>
+        <div className={`agentflow-container${isDarkMode ? ' dark' : ''}`}>
             {/* Header */}
             {renderHeader ? renderHeader(headerProps) : showDefaultHeader ? <AgentflowHeader {...headerProps} readOnly={readOnly} /> : null}
 
@@ -138,13 +207,19 @@ function AgentflowCanvas({
                 {renderNodePalette && renderNodePalette(paletteProps)}
 
                 {/* Canvas */}
-                <div className='agentflow-canvas' ref={reactFlowWrapper} onDragOver={handleDragOver} onDrop={handleDrop}>
-                    {/* Add Nodes Drawer - floating button */}
+                <div
+                    className='agentflow-canvas'
+                    data-dark-mode={isDarkMode}
+                    ref={reactFlowWrapper}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                >
+                    {/* Add Nodes Drawer - positioned at top left */}
                     {!readOnly && showDefaultPalette && (
                         <AddNodesDrawer nodes={availableNodes} onNodeClick={(node) => handleAddNode(node.name)} />
                     )}
 
-                    {/* Generate Flow Button */}
+                    {/* Generate Flow Button - positioned at top left, next to Add Nodes button (v2 style) */}
                     {!readOnly && enableGenerator && (
                         <StyledFab
                             gradient
@@ -154,13 +229,23 @@ function AgentflowCanvas({
                             onClick={() => setShowGenerateDialog(true)}
                             sx={{
                                 position: 'absolute',
-                                left: 70,
+                                left: showDefaultPalette ? 70 : 20, // 70px offset = ~10px gap between buttons
                                 top: 20,
-                                zIndex: 1000
+                                zIndex: 1001
                             }}
                         >
                             <IconSparkles />
                         </StyledFab>
+                    )}
+
+                    {/* Validation Feedback - positioned at top right */}
+                    {!readOnly && (
+                        <ValidationFeedback
+                            nodes={nodes as FlowNode[]}
+                            edges={edges as FlowEdge[]}
+                            availableNodes={availableNodes}
+                            setNodes={setLocalNodes as React.Dispatch<React.SetStateAction<FlowNode[]>>}
+                        />
                     )}
 
                     <ReactFlow
@@ -169,6 +254,7 @@ function AgentflowCanvas({
                         onNodesChange={handleNodesChange}
                         onEdgesChange={handleEdgesChange}
                         onConnect={handleConnect}
+                        onNodeDragStop={handleNodeDragStop}
                         onInit={setReactFlowInstance}
                         nodeTypes={nodeTypes}
                         edgeTypes={edgeTypes}
@@ -178,15 +264,36 @@ function AgentflowCanvas({
                         nodesConnectable={!readOnly}
                         elementsSelectable={!readOnly}
                     >
-                        <Controls />
-                        <MiniMap />
-                        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                        <Controls className={isDarkMode ? 'dark-mode-controls' : ''} />
+                        <MiniMap
+                            nodeStrokeWidth={3}
+                            nodeColor={reactFlowColors.minimapNode}
+                            nodeStrokeColor={reactFlowColors.minimapNodeStroke}
+                            maskColor={reactFlowColors.minimapMask}
+                            style={{ backgroundColor: reactFlowColors.minimapBackground }}
+                        />
+                        <Background color={reactFlowColors.backgroundDots} gap={16} />
                     </ReactFlow>
                 </div>
             </div>
 
             {/* Generate Flow Dialog */}
             <GenerateFlowDialog open={showGenerateDialog} onClose={() => setShowGenerateDialog(false)} onGenerated={handleFlowGenerated} />
+
+            {/* Edit Node Dialog */}
+            <EditNodeDialog show={state.editingNodeId !== null} dialogProps={state.editDialogProps || {}} onCancel={closeEditDialog} />
+
+            {/* Constraint Violation Snackbar */}
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={5000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity='error' variant='filled' sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
@@ -197,13 +304,13 @@ function AgentflowCanvas({
  *
  * @example
  * ```tsx
- * import { Agentflow } from '@flowise/agentflow'
- * import '@flowise/agentflow/flowise.css'
+ * import { Agentflow } from '@flowiseai/agentflow'
+ * import '@flowiseai/agentflow/flowise.css'
  *
  * function App() {
  *   return (
  *     <Agentflow
- *       instanceUrl="https://flowise-url.com"
+ *       apiBaseUrl="https://flowise-url.com"
  *       token="your-auth-token"
  *       components={['agentAgentflow', 'llmAgentflow']}
  *     />
@@ -213,14 +320,15 @@ function AgentflowCanvas({
  */
 export const Agentflow = forwardRef<AgentFlowInstance, AgentflowProps>(function Agentflow(props, ref) {
     const {
-        instanceUrl,
+        apiBaseUrl,
         token,
-        flow,
+        requestInterceptor,
+        initialFlow,
         components,
         onFlowChange,
         onSave,
         onFlowGenerated,
-        theme = 'system',
+        isDarkMode = false,
         readOnly = false,
         enableGenerator = true,
         renderHeader,
@@ -231,17 +339,18 @@ export const Agentflow = forwardRef<AgentFlowInstance, AgentflowProps>(function 
 
     return (
         <AgentflowProvider
-            instanceUrl={instanceUrl}
+            apiBaseUrl={apiBaseUrl}
             token={token}
-            theme={theme}
+            requestInterceptor={requestInterceptor}
+            isDarkMode={isDarkMode}
             components={components}
             readOnly={readOnly}
-            initialFlow={flow}
+            initialFlow={initialFlow}
         >
             <ReactFlowProvider>
                 <AgentflowCanvasWithRef
                     ref={ref}
-                    initialFlow={flow}
+                    initialFlow={initialFlow}
                     readOnly={readOnly}
                     onFlowChange={onFlowChange}
                     onSave={onSave}
@@ -265,9 +374,9 @@ const AgentflowCanvasWithRef = forwardRef<
     {
         initialFlow?: FlowData
         readOnly?: boolean
-        onFlowChange?: (flow: FlowData) => void
-        onSave?: (flow: FlowData) => void
-        onFlowGenerated?: (flow: FlowData) => void
+        onFlowChange?: FlowDataCallback
+        onSave?: FlowDataCallback
+        onFlowGenerated?: FlowDataCallback
         showDefaultHeader?: boolean
         showDefaultPalette?: boolean
         enableGenerator?: boolean

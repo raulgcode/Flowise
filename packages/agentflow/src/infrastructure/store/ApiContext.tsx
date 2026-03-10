@@ -1,12 +1,14 @@
-import { createContext, ReactNode, useContext, useMemo } from 'react'
+import { createContext, ReactNode, useContext, useMemo, useRef } from 'react'
 
 import type { AxiosInstance } from 'axios'
+
+import type { RequestInterceptor } from '@/core/types'
 
 import { type ChatflowsApi, createApiClient, createChatflowsApi, createNodesApi, type NodesApi } from '../api'
 
 interface ApiContextValue {
     client: AxiosInstance
-    instanceUrl: string
+    apiBaseUrl: string
     nodesApi: NodesApi
     chatflowsApi: ChatflowsApi
 }
@@ -14,24 +16,31 @@ interface ApiContextValue {
 const ApiContext = createContext<ApiContextValue | null>(null)
 
 interface ApiProviderProps {
-    instanceUrl: string
+    apiBaseUrl: string
     token?: string
+    requestInterceptor?: RequestInterceptor
     children: ReactNode
 }
 
-export function ApiProvider({ instanceUrl, token, children }: ApiProviderProps) {
+export function ApiProvider({ apiBaseUrl, token, requestInterceptor, children }: ApiProviderProps) {
+    // Use ref so the consumer doesn't need to memoize requestInterceptor and won't get a new client on every render.
+    const interceptorRef = useRef(requestInterceptor)
+    interceptorRef.current = requestInterceptor
+
     const value = useMemo(() => {
-        const client = createApiClient(instanceUrl, token)
+        const client = createApiClient(apiBaseUrl, token, (config) => {
+            return interceptorRef.current?.(config) ?? config
+        })
         const nodesApi = createNodesApi(client)
         const chatflowsApi = createChatflowsApi(client)
 
         return {
             client,
-            instanceUrl,
+            apiBaseUrl,
             nodesApi,
             chatflowsApi
         }
-    }, [instanceUrl, token])
+    }, [apiBaseUrl, token])
 
     return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>
 }

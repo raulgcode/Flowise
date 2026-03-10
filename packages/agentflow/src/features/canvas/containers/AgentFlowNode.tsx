@@ -1,10 +1,11 @@
 import { memo, useEffect, useRef, useState } from 'react'
-import { useUpdateNodeInternals } from 'reactflow'
 
 import { Box, Typography } from '@mui/material'
 
-import type { NodeData } from '../../../core/types'
-import { useApiContext, useConfigContext } from '../../../infrastructure/store'
+import { tokens } from '@/core/theme/tokens'
+import type { NodeData } from '@/core/types'
+import { useApiContext, useConfigContext } from '@/infrastructure/store'
+
 import { NodeIcon } from '../components/NodeIcon'
 import { NodeInfoDialog } from '../components/NodeInfoDialog'
 import { NodeInputHandle } from '../components/NodeInputHandle'
@@ -12,8 +13,12 @@ import { NodeModelConfigs } from '../components/NodeModelConfigs'
 import { getMinimumNodeHeight, NodeOutputHandles } from '../components/NodeOutputHandles'
 import { NodeStatusIndicator, NodeWarningIndicator } from '../components/NodeStatusIndicator'
 import { NodeToolbarActions } from '../components/NodeToolbarActions'
+import { useOpenNodeEditor } from '../hooks'
 import { useNodeColors } from '../hooks/useNodeColors'
 import { CardWrapper } from '../styled'
+
+/** Width of the node icon container in pixels (theme.spacing(6.25) = 50px) */
+const NODE_ICON_CONTAINER_WIDTH = 50
 
 export interface AgentFlowNodeProps {
     data: NodeData
@@ -24,9 +29,9 @@ export interface AgentFlowNodeProps {
  */
 function AgentFlowNodeComponent({ data }: AgentFlowNodeProps) {
     const { isDarkMode } = useConfigContext()
-    const { instanceUrl } = useApiContext()
+    const { apiBaseUrl } = useApiContext()
     const ref = useRef<HTMLDivElement>(null)
-    const updateNodeInternals = useUpdateNodeInternals()
+    const { openNodeEditor } = useOpenNodeEditor()
 
     const [isHovered, setIsHovered] = useState(false)
     const [warningMessage, setWarningMessage] = useState('')
@@ -39,32 +44,23 @@ function AgentFlowNodeComponent({ data }: AgentFlowNodeProps) {
         isHovered
     })
 
+    const handleDoubleClick = () => {
+        openNodeEditor(data.id)
+    }
+
+    const hasValidationErrors = (data.validationErrors?.length ?? 0) > 0
     const outputAnchors = data.outputAnchors ?? []
     const minHeight = getMinimumNodeHeight(outputAnchors.length)
 
     useEffect(() => {
-        if (ref.current) {
-            setTimeout(() => {
-                updateNodeInternals(data.id)
-            }, 10)
-        }
-    }, [data, ref, updateNodeInternals])
-
-    useEffect(() => {
-        if (data.warning) {
-            setWarningMessage(data.warning)
-        } else {
-            setWarningMessage('')
-        }
-    }, [data.name, data.version, data.warning])
+        const messages: string[] = []
+        if (data.warning) messages.push(data.warning)
+        if (data.validationErrors?.length) messages.push(...data.validationErrors)
+        setWarningMessage(messages.join('\n'))
+    }, [data.name, data.version, data.warning, data.validationErrors])
 
     return (
-        <div
-            ref={ref}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{ position: 'relative', width: 'fit-content' }}
-        >
+        <div ref={ref} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onDoubleClick={handleDoubleClick}>
             <NodeToolbarActions
                 nodeId={data.id}
                 nodeName={data.name}
@@ -75,16 +71,14 @@ function AgentFlowNodeComponent({ data }: AgentFlowNodeProps) {
             <CardWrapper
                 content={false}
                 sx={{
-                    width: 'max-content',
-                    borderColor: stateColor,
-                    borderWidth: '1px',
+                    borderColor: hasValidationErrors ? tokens.colors.border.validation : stateColor,
+                    borderWidth: hasValidationErrors ? '2px' : '1px',
                     boxShadow: data.selected ? `0 0 0 1px ${stateColor} !important` : 'none',
                     minHeight,
                     height: 'auto',
                     backgroundColor,
                     display: 'flex',
                     alignItems: 'center',
-                    px: '14px',
                     '&:hover': {
                         boxShadow: data.selected ? `0 0 0 1px ${stateColor} !important` : 'none'
                     }
@@ -94,12 +88,12 @@ function AgentFlowNodeComponent({ data }: AgentFlowNodeProps) {
                 <NodeStatusIndicator status={data.status} error={data.error} />
                 <NodeWarningIndicator message={warningMessage} />
 
-                <Box sx={{ width: 'max-content', flexShrink: 0 }}>
+                <Box sx={{ width: '100%' }}>
                     <NodeInputHandle nodeId={data.id} nodeColor={nodeColor} hidden={data.hideInput} />
 
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <Box style={{ padding: 10 }}>
-                            <NodeIcon data={data} instanceUrl={instanceUrl} />
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <Box sx={{ width: NODE_ICON_CONTAINER_WIDTH }}>
+                            <NodeIcon data={data} apiBaseUrl={apiBaseUrl} />
                         </Box>
                         <Box>
                             <Typography
@@ -110,9 +104,9 @@ function AgentFlowNodeComponent({ data }: AgentFlowNodeProps) {
                             >
                                 {data.label}
                             </Typography>
-                            <NodeModelConfigs inputs={data.inputs} />
+                            <NodeModelConfigs inputs={data.inputValues} />
                         </Box>
-                    </div>
+                    </Box>
 
                     <NodeOutputHandles
                         outputAnchors={outputAnchors}

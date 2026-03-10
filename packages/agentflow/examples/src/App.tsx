@@ -6,10 +6,11 @@
 
 import { type ComponentType, lazy, Suspense, useState } from 'react'
 
-import { instanceUrl, token } from './config'
+import { apiBaseUrl, token } from './config'
 import {
     AllNodeTypesExampleProps,
     BasicExampleProps,
+    CustomNodeExampleProps,
     CustomUIExampleProps,
     DarkModeExampleProps,
     FilteredComponentsExampleProps,
@@ -52,6 +53,13 @@ const examples: Array<{
         description: 'Node execution states with animations',
         props: StatusIndicatorsExampleProps,
         component: lazy(() => import('./demos/StatusIndicatorsExample').then((m) => ({ default: m.StatusIndicatorsExample })))
+    },
+    {
+        id: 'custom-node',
+        name: 'Custom Node',
+        description: 'Node with self-contained InputParam definitions and show/hide conditions',
+        props: CustomNodeExampleProps,
+        component: lazy(() => import('./demos/CustomNodeExample').then((m) => ({ default: m.CustomNodeExample })))
     },
     {
         id: 'custom-ui',
@@ -100,6 +108,7 @@ function LoadingFallback() {
 
 export default function App() {
     const [selectedExample, setSelectedExample] = useState<ExampleId>('basic')
+    const [showProps, setShowProps] = useState(false)
     // Config loaded from environment variables
 
     const currentExample = examples.find((e) => e.id === selectedExample)
@@ -108,8 +117,8 @@ export default function App() {
     const actualProps = currentExample?.props
         ? Object.fromEntries(
               Object.entries(currentExample.props).map(([key, value]) => {
-                  if (key === 'instanceUrl' && typeof value === 'string' && value.includes('environment variables')) {
-                      return [key, instanceUrl]
+                  if (key === 'apiBaseUrl' && typeof value === 'string' && value.includes('environment variables')) {
+                      return [key, apiBaseUrl]
                   }
                   if (key === 'token' && typeof value === 'string' && value.includes('environment variables')) {
                       return [key, token ? `${token.substring(0, 20)}...` : 'undefined']
@@ -163,9 +172,9 @@ export default function App() {
                 </select>
                 {currentExample && <span style={{ color: '#666', fontSize: '13px' }}>{currentExample.description}</span>}
 
-                {/* Instance URL Display */}
+                {/* API Base URL Display */}
                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '12px', color: '#999' }}>{instanceUrl}</span>
+                    <span style={{ fontSize: '12px', color: '#999' }}>{apiBaseUrl}</span>
                 </div>
             </div>
 
@@ -175,6 +184,8 @@ export default function App() {
                     exampleName={currentExample.name}
                     props={actualProps as Record<string, string | boolean>}
                     exampleId={selectedExample}
+                    showProps={showProps}
+                    onToggleProps={setShowProps}
                 />
             )}
 

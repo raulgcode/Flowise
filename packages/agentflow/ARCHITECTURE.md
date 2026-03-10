@@ -1,6 +1,6 @@
-# @flowise/agentflow - Architecture
+# @flowiseai/agentflow - Architecture
 
-This document describes the internal architecture of the `@flowise/agentflow` package.
+This document describes the internal architecture of the `@flowiseai/agentflow` package.
 
 ## Overview
 
@@ -30,9 +30,8 @@ src/
 ```
 atoms/
 ├── MainCard.tsx            # Styled card wrapper
-├── Input.tsx               # Basic input component
-├── ConfirmDialog.tsx       # Confirmation dialog with context
 ├── NodeInputHandler.tsx    # Form input for node properties
+├── ...                     # Other UI primitives
 └── index.ts                # Central export
 ```
 
@@ -59,41 +58,35 @@ features/
 │   ├── containers/         # Smart components with state/logic
 │   │   ├── AgentFlowNode.tsx
 │   │   ├── AgentFlowEdge.tsx
-│   │   ├── StickyNote.tsx
-│   │   ├── IterationNode.tsx
+│   │   ├── ...             # Other node containers
 │   │   └── index.ts
 │   ├── components/         # Presentational components
-│   │   ├── AgentflowHeader.tsx
 │   │   ├── ConnectionLine.tsx
-│   │   ├── NodeToolbarActions.tsx
-│   │   ├── NodeStatusIndicator.tsx
-│   │   ├── NodeInfoDialog.tsx
-│   │   ├── NodeModelConfigs.tsx
+│   │   ├── NodeOutputHandles.tsx
+│   │   ├── ...             # Other presentational components
 │   │   └── index.ts
 │   ├── hooks/              # Canvas-related hooks
-│   │   ├── useFlowNodes.ts
 │   │   ├── useFlowHandlers.ts
 │   │   ├── useDragAndDrop.ts
+│   │   ├── ...             # Other canvas hooks
 │   │   └── index.ts
 │   ├── styled.ts           # Styled components
-│   ├── nodeIcons.tsx       # Icon utilities
-│   ├── canvas.css          # Co-located styles
 │   └── index.ts            # Public API
 │
 ├── node-palette/           # Add nodes drawer
 │   ├── AddNodesDrawer.tsx
-│   ├── StyledFab.tsx
 │   ├── search.ts           # Feature-specific utility (private)
-│   └── index.ts            # Exports: AddNodesDrawer, StyledFab
+│   ├── ...
+│   └── index.ts
 │
 ├── generator/              # AI flow generation
 │   ├── GenerateFlowDialog.tsx
-│   ├── SuggestionChips.tsx
-│   └── index.ts            # Exports: GenerateFlowDialog
+│   ├── ...
+│   └── index.ts
 │
 └── node-editor/            # Node property editing
     ├── EditNodeDialog.tsx
-    └── index.ts            # Exports: EditNodeDialog
+    └── index.ts
 ```
 
 **Rules:**
@@ -119,19 +112,21 @@ core/
 │   └── index.ts
 ├── node-config/            # Node configuration (icons, colors, default types)
 │   ├── nodeIcons.ts        # AGENTFLOW_ICONS, DEFAULT_AGENTFLOW_NODES
-│   ├── nodeIconUtils.ts    # getAgentflowIcon, getNodeColor
-│   └── index.ts
+│   └── ...
 ├── node-catalog/           # Node catalog and filtering logic
-│   ├── nodeFilters.ts      # filterNodesByComponents, isAgentflowNode, groupNodesByCategory
-│   └── index.ts
+│   ├── nodeFilters.ts      # filterNodesByComponents, isAgentflowNode
+│   └── ...
+├── theme/                  # Design tokens and MUI theming
+│   ├── tokens.ts           # Color palettes, spacing, shadows
+│   ├── createAgentflowTheme.ts
+│   └── ...
 ├── validation/             # Flow validation logic
 │   ├── flowValidation.ts   # validateFlow, validateNode
-│   └── index.ts
+│   ├── connectionValidation.ts  # isValidConnectionAgentflowV2
+│   └── ...
 ├── utils/                  # Generic utilities
-│   ├── nodeFactory.ts      # initNode, getUniqueNodeId, getUniqueNodeLabel
-│   ├── connectionValidation.ts # isValidConnectionAgentflowV2
-│   ├── flowExport.ts       # generateExportFlowData
-│   └── index.ts
+│   ├── nodeFactory.ts      # initNode, getUniqueNodeId
+│   └── ...
 └── index.ts                # Barrel export (use sparingly)
 ```
 
@@ -155,17 +150,13 @@ core/
 infrastructure/
 ├── api/                    # API client layer (network requests)
 │   ├── client.ts           # Axios factory
-│   ├── nodes.ts            # Nodes API endpoints
-│   ├── chatflows.ts        # Chatflows API endpoints
-│   ├── hooks/
-│   │   └── useApi.ts       # API hook (co-located)
+│   ├── ...                 # Endpoint modules (nodes, chatflows, etc.)
 │   └── index.ts
 │
 └── store/                  # State management
-    ├── ApiContext.tsx      # API client context
-    ├── ConfigContext.tsx   # Configuration context
     ├── AgentflowContext.tsx # Flow state context
-    ├── useFlowInstance.ts  # ReactFlow instance hook
+    ├── agentflowReducer.ts # Reducer for flow state actions
+    ├── ...                 # Other contexts (ApiContext, ConfigContext)
     └── index.ts
 ```
 
@@ -356,6 +347,6 @@ import { useFlowHandlers } from '@features/canvas/hooks/useFlowHandlers'
 | Type        | Convention                | Example                               |
 | ----------- | ------------------------- | ------------------------------------- |
 | Component   | PascalCase.tsx            | `AgentFlowNode.tsx`                   |
-| Hook        | camelCase.ts (use prefix) | `useFlowInstance.ts`                  |
+| Hook        | camelCase.ts (use prefix) | `useFlowHandlers.ts`                  |
 | Logic/Types | camelCase.ts              | `flowValidation.ts`, `nodeFilters.ts` |
 | Styles      | kebab-case (co-located)   | `canvas.css`                          |
